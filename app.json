@@ -1,0 +1,35 @@
+{
+    "expo": {
+        "name": "Event planner",
+        "slug": "Event planner",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "icon": "./src/assets/icon.png",
+        "userInterfaceStyle": "light",
+        "splash": {
+            "image": "./src/assets/splash.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#ffffff"
+        },
+        "ios": {
+            "supportsTablet": true
+        },
+        "android": {
+            "permissions": ["NOTIFICATIONS"],
+            "adaptiveIcon": {
+                "foregroundImage": "./src/assets/adaptive-icon.png",
+                "backgroundColor": "#ffffff"
+            },
+            "package": "com.vantuoi.sampleapp"
+        },
+        "web": {
+            "favicon": "./src/assets/favicon.png"
+        },
+        "plugins": ["expo-font"],
+        "extra": {
+            "eas": {
+                "projectId": "a9d31ae6-e62e-4f6d-8dbd-cb0ff48e2446"
+            }
+        }
+    }
+}
