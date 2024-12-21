@@ -10,11 +10,13 @@ export const AppTheme = {
         secondary: "#E9EDF1",
         secondaryContainer: "#EAEEF2",
         accent: "#03dac4",
-        body: "#4B4B4B",
+        body: "#101010",
         background: "#ffffff",
         surface: "#f6f6f6",
-        onSurface: "#000000",
-        placeholder: "#6b6b6b"
+        onSurface: "#101010",
+        placeholder: "#6b6b6b",
+        success: "#4caf50",
+        error: "#f44336"
     },
     fonts: {
         ...DefaultTheme.fonts,
