@@ -18,17 +18,17 @@ const fakeEventApi = (): Promise<Event[]> =>
                     entries: [
                         {
                             id: "entry-1",
-                            name: "Main Entrance",
+                            name: "Main Entrance 1",
                             totalIn: 355,
-                            totalOut: 355,
+                            totalOut: 50,
                             status: "open"
                         },
                         {
                             id: "entry-2",
-                            name: "Main Entrance",
+                            name: "Main Entrance 2",
                             totalIn: 405,
-                            totalOut: 405,
-                            status: "open"
+                            totalOut: 0,
+                            status: "close"
                         }
                     ],
                     doorKeepers: [
@@ -109,7 +109,7 @@ const fakeEventApi = (): Promise<Event[]> =>
                     ]
                 }
             ]);
-        }, 350);
+        }, 3000);
     });
 
 interface UseEventReturn {

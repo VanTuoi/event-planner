@@ -9,7 +9,7 @@ import { EventComponent } from "./event.item";
 
 export const HomeScreen = () => {
     const { colors } = useTheme();
-    const { events } = useEvent();
+    const { events, isLoading } = useEvent();
 
     const [modalVisible, setModalVisible] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
@@ -28,7 +28,7 @@ export const HomeScreen = () => {
     const renderEmptyList = () => (
         <>
             <Image source={homeImage} style={styles.image} />
-            <Text style={styles.title}>Events</Text>
+            <Text style={styles.title}>{isLoading ? "Loading..." : "Events"}</Text>
         </>
     );
 

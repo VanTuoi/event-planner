@@ -1,12 +1,10 @@
 import { RouteProp, useRoute } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { useTheme } from "react-native-paper";
-import { Event } from "~/types/event";
-
-type RootStackParamList = {
-    "event-detail": { event: Event };
-};
+import { RootStackParamList } from "~/types/route";
+import { EntryComponent } from "./entry.item";
+import { Statistic } from "./statistic";
 
 export const DetailScreen = () => {
     const { colors } = useTheme();
@@ -18,37 +16,60 @@ export const DetailScreen = () => {
         <View style={[styles.container, { backgroundColor: colors.background }]}>
             <View style={styles.mainContent}>
                 <Text style={styles.titleHaveEvent}>EVENT STATISTICS</Text>
-                {event ? (
-                    <>
-                        <Text>Title: {event.titleEvent}</Text>
-                        <Text>Venue: {event.venue}</Text>
-                        <Text>Max Participants: {event.maxParticipants}</Text>
-                    </>
-                ) : (
-                    <Text>No event data available</Text>
-                )}
+                {event ? <Statistic event={event} /> : <Text>No event data available</Text>}
+                <Text style={styles.titleHaveEvent}>ENTRIES</Text>
+                <FlatList
+                    contentContainerStyle={{ flexGrow: 1 }}
+                    style={styles.list}
+                    showsVerticalScrollIndicator={false}
+                    data={event?.entries}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={({ item, index }) => (
+                        <EntryComponent
+                            entries={item}
+                            marginStyle={index % 2 === 0 ? { marginRight: 8 } : { marginLeft: 8 }}
+                        />
+                    )}
+                    numColumns={2}
+                />
             </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, justifyContent: "center", alignItems: "center" },
+    container: {
+        flex: 1,
+        borderRadius: 12
+    },
     mainContent: {
         flex: 1,
+        width: "100%",
+        padding: 16,
         justifyContent: "flex-start",
         alignItems: "center",
-        width: "100%",
-        padding: 16
+        display: "flex",
+        flexDirection: "column",
+        gap: 20
     },
     title: { fontSize: 24, marginBottom: 16, width: "100%", textAlign: "left" },
     titleHaveEvent: {
         width: "100%",
         fontSize: 30,
-        paddingVertical: 20,
+        paddingVertical: 0,
         paddingTop: 0,
         textTransform: "uppercase",
         textAlign: "left",
         fontWeight: "bold"
+    },
+    list: {
+        width: "100%",
+        flex: 1,
+        gap: 18
+    },
+    entryContainer: {
+        flex: 1,
+        marginBottom: 15,
+        marginRight: 15
     }
 });
