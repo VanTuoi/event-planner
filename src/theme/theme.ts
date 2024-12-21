@@ -6,7 +6,11 @@ export const AppTheme = {
     colors: {
         ...DefaultTheme.colors,
         primary: "#274D76",
+        primaryContainer: "#4B4B4B",
+        secondary: "#E9EDF1",
+        secondaryContainer: "#EAEEF2",
         accent: "#03dac4",
+        body: "#4B4B4B",
         background: "#ffffff",
         surface: "#f6f6f6",
         onSurface: "#000000",

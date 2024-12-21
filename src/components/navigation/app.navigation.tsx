@@ -19,9 +19,9 @@ const HomeLayout = () => (
         <Stack.Navigator screenOptions={{ animation: "fade_from_bottom" }}>
             <Stack.Screen name="home" component={HomeScreen} options={{ title: "Home", headerShown: false }} />
             <Stack.Screen
-                name="review-detail"
+                name="event-detail"
                 component={DetailScreen}
-                options={{ title: "Detail Review", headerShown: false }}
+                options={{ title: "Event Detail", headerShown: false }}
             />
             <Stack.Screen name="about" component={AboutScreen} options={{ title: "About", headerShown: false }} />
         </Stack.Navigator>
