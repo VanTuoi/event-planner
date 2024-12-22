@@ -6,6 +6,7 @@ export type RootStackParamList = {
     home: undefined;
     about: undefined;
     "event-detail": { event: Event } | undefined;
+    "event-setting": { event: Event } | undefined;
     homeLayout: undefined;
     authStack: undefined;
 };

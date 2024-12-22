@@ -9,20 +9,16 @@ import { EventComponent } from "./event.item";
 
 export const HomeScreen = () => {
     const { colors } = useTheme();
-    const { events, isLoading } = useEvent();
+    const { events, isLoading, fetchEvents } = useEvent();
 
     const [modalVisible, setModalVisible] = useState(false);
-    const [refreshing, setRefreshing] = useState(false);
 
     const onCreateEvent = (newEvent: EventCreate) => {
         console.log("newEvent", newEvent);
     };
 
     const onRefresh = () => {
-        setRefreshing(true);
-        setTimeout(() => {
-            setRefreshing(false);
-        }, 1000);
+        fetchEvents();
     };
 
     const renderEmptyList = () => (
@@ -42,7 +38,7 @@ export const HomeScreen = () => {
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => <EventComponent event={item} />}
                 refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[colors.primary]} />
+                    <RefreshControl refreshing={isLoading} onRefresh={onRefresh} colors={[colors.primary]} />
                 }
             />
         </>

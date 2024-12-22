@@ -7,6 +7,26 @@ import { RootStackParamList } from "~/types/route";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+const HomeScreenComponent = () => (
+    <AppLayout>
+        <HomeScreen />
+    </AppLayout>
+);
+
+const DetailScreenComponent = () => (
+    <AppLayout>
+        <DetailScreen />
+    </AppLayout>
+);
+
+const SettingEventScreenComponent = () => <AppLayout>{null}</AppLayout>;
+
+const AboutScreenComponent = () => (
+    <AppLayout>
+        <AboutScreen />
+    </AppLayout>
+);
+
 const AuthStack = () => (
     <Stack.Navigator screenOptions={{ animation: "slide_from_right" }}>
         <Stack.Screen name="login" component={LoginScreen} options={{ headerShown: false }} />
@@ -15,17 +35,20 @@ const AuthStack = () => (
 );
 
 const HomeLayout = () => (
-    <AppLayout>
-        <Stack.Navigator screenOptions={{ animation: "fade_from_bottom" }}>
-            <Stack.Screen name="home" component={HomeScreen} options={{ title: "Home", headerShown: false }} />
-            <Stack.Screen
-                name="event-detail"
-                component={DetailScreen}
-                options={{ title: "Event Detail", headerShown: false }}
-            />
-            <Stack.Screen name="about" component={AboutScreen} options={{ title: "About", headerShown: false }} />
-        </Stack.Navigator>
-    </AppLayout>
+    <Stack.Navigator screenOptions={{ animation: "fade_from_bottom" }}>
+        <Stack.Screen name="home" component={HomeScreenComponent} options={{ title: "Home", headerShown: false }} />
+        <Stack.Screen
+            name="event-detail"
+            component={DetailScreenComponent}
+            options={{ title: "Event Detail", headerShown: false }}
+        />
+        <Stack.Screen
+            name="event-setting"
+            component={SettingEventScreenComponent}
+            options={{ title: "Event Detail", headerShown: false }}
+        />
+        <Stack.Screen name="about" component={AboutScreenComponent} options={{ title: "About", headerShown: false }} />
+    </Stack.Navigator>
 );
 
 const AppNavigation = () => {
