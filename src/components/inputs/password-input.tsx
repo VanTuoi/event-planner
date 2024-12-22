@@ -37,7 +37,7 @@ export const InputPassword: React.FC<InputPasswordProps> = ({ label, value, onCh
 };
 
 const styles = StyleSheet.create({
-    container: { marginBottom: 16, width: "100%" },
+    container: { marginBottom: 8, width: "100%" },
     input: { width: "100%" },
     errorText: { color: "red", fontSize: 12, marginTop: 4 }
 });
