@@ -5,7 +5,7 @@ import { useTheme } from "react-native-paper";
 import SelectLanguage from "./language";
 import Logout from "./logout";
 
-const AppHeader = () => {
+export const AppHeader = () => {
     const [isExpanded, setIsExpanded] = useState(false);
     const heightAnim = useRef(new Animated.Value(60)).current;
     const { colors, fonts } = useTheme();
@@ -79,5 +79,3 @@ const styles = StyleSheet.create({
         fontSize: 16
     }
 });
-
-export default AppHeader;

@@ -18,6 +18,7 @@ export const DetailScreen = () => {
                 <Text style={styles.titleHaveEvent}>EVENT STATISTICS</Text>
                 {event ? <Statistic event={event} /> : <Text>No event data available</Text>}
                 <Text style={styles.titleHaveEvent}>ENTRIES</Text>
+                {!event && <Text>No entries data available</Text>}
                 <FlatList
                     contentContainerStyle={{ flexGrow: 1 }}
                     style={styles.list}

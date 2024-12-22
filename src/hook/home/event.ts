@@ -109,13 +109,14 @@ const fakeEventApi = (): Promise<Event[]> =>
                     ]
                 }
             ]);
-        }, 3000);
+        }, 2000);
     });
 
 interface UseEventReturn {
     events: Event[];
     isLoading: boolean;
     error: string | null;
+    fetchEvents: () => void;
 }
 
 export const useEvent = (): UseEventReturn => {
@@ -126,7 +127,6 @@ export const useEvent = (): UseEventReturn => {
     const fetchEvents = async () => {
         setIsLoading(true);
         setError(null);
-
         try {
             const eventList = await fakeEventApi();
             setEvents(eventList);
@@ -142,5 +142,5 @@ export const useEvent = (): UseEventReturn => {
         fetchEvents();
     }, []);
 
-    return { events, isLoading, error };
+    return { events, isLoading, error, fetchEvents };
 };
