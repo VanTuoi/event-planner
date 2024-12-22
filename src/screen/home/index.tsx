@@ -4,7 +4,7 @@ import { Button, useTheme } from "react-native-paper";
 import homeImage from "~/assets/images/home.png";
 import { useEvent } from "~/hook/home/event";
 import { EventCreate } from "~/types/event";
-import { CreateEvent } from "./create";
+import { CreateEventDialog } from "./create";
 import { EventComponent } from "./event.item";
 
 export const HomeScreen = () => {
@@ -52,7 +52,11 @@ export const HomeScreen = () => {
                     Create new event
                 </Button>
             </View>
-            <CreateEvent modalVisible={modalVisible} setModalVisible={setModalVisible} onCreateEvent={onCreateEvent} />
+            <CreateEventDialog
+                visible={modalVisible}
+                onClose={(status) => setModalVisible(status)}
+                onCreate={onCreateEvent}
+            />
         </View>
     );
 };
