@@ -11,7 +11,7 @@ export const EventSettingScreen = () => {
     const route = useRoute<RouteProp<RootStackParamList, "event-detail">>();
 
     const [event, setEvent] = useState(route.params?.event);
-    const [visible, setVisible] = useState(false); // State to control dialog visibility
+    const [visible, setVisible] = useState(false);
 
     useEffect(() => {
         if (route.params?.event) {
@@ -24,17 +24,16 @@ export const EventSettingScreen = () => {
     };
 
     const handleDelete = () => {
-        setVisible(true); // Show dialog when Delete is clicked
+        setVisible(true);
     };
 
     const handleConfirmDelete = () => {
-        // Your deletion logic here
         console.log("Event deleted");
-        setVisible(false); // Close dialog after deletion
+        setVisible(false);
     };
 
     const handleCancelDelete = () => {
-        setVisible(false); // Close dialog without deleting
+        setVisible(false);
     };
 
     const handleDownloadStatistics = () => {};
@@ -50,8 +49,6 @@ export const EventSettingScreen = () => {
                     onDownloadStatistics={handleDownloadStatistics}
                 />
             </View>
-
-            {/* Dialog Component */}
             <Portal>
                 <Dialog visible={visible} onDismiss={handleCancelDelete} style={styles.dialog}>
                     <Dialog.Title style={styles.dialogTitle}>Confirm event deletion</Dialog.Title>

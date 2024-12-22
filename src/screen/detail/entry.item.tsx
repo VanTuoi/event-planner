@@ -1,7 +1,8 @@
-import React from "react";
-import { StyleSheet, Text, View, ViewStyle } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from "react-native";
 import { Button, useTheme } from "react-native-paper";
-import { Entry } from "~/types/event";
+import { DoorKeeper, Entry } from "~/types/event";
+import { EntryModal } from "./entry.modal";
 
 interface EntryComponentProps {
     entries: Entry;
@@ -10,45 +11,79 @@ interface EntryComponentProps {
 
 export const EntryComponent = ({ entries, marginStyle }: EntryComponentProps) => {
     const { colors } = useTheme();
+    const [modalVisible, setModalVisible] = useState(false);
+    const [doorKeepers, setDoorKeepers] = useState<DoorKeeper[]>(entries.doorKeepers || []);
 
-    const handleChangeStatus = (entrieId: string, status: string) => {
-        console.log("entrieId", entrieId);
+    const handleChangeStatus = (status: string) => {
         console.log("status", status);
     };
 
+    const handleDeleteEntry = () => {
+        console.log("entries id", entries?.id);
+    };
+
+    const handleAddKeeper = (keeper: DoorKeeper) => {
+        setDoorKeepers((prev) => [...prev, keeper]);
+    };
+
+    const handleRemoveKeeper = (keeperId: string) => {
+        setDoorKeepers((prev) => prev.filter((keeper) => keeper.id !== keeperId));
+    };
+
     return (
-        <View style={[styles.container, { backgroundColor: colors.secondary }, marginStyle]}>
-            <View style={styles.mainContent}>
-                <Text style={[styles.title]}>{entries?.name}</Text>
-                <View style={[styles.body]}>
-                    <View style={[styles.bodyItem]}>
-                        <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>total in</Text>
-                        <Text style={[styles.bodyItemContain, { color: colors.primary }]}>{entries.totalIn}</Text>
-                    </View>
-                    <View style={[styles.bodyItem]}>
-                        <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>total out</Text>
-                        <Text style={[styles.bodyItemContain, { color: colors.primary }]}>{entries.totalOut}</Text>
+        <>
+            <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
+                <View style={[styles.container, { backgroundColor: colors.secondary }, marginStyle]}>
+                    <View style={styles.mainContent}>
+                        <Text style={[styles.title]}>{entries?.name}</Text>
+                        <View style={[styles.body]}>
+                            <View style={[styles.bodyItem]}>
+                                <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>total in</Text>
+                                <Text style={[styles.bodyItemContain, { color: colors.primary }]}>
+                                    {entries.totalIn}
+                                </Text>
+                            </View>
+                            <View style={[styles.bodyItem]}>
+                                <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>
+                                    total out
+                                </Text>
+                                <Text style={[styles.bodyItemContain, { color: colors.primary }]}>
+                                    {entries.totalOut}
+                                </Text>
+                            </View>
+                        </View>
+                        <View style={[styles.footer]}>
+                            <Button
+                                style={[
+                                    styles.button,
+                                    { backgroundColor: entries?.status === "open" ? "#40AA71" : "#CE5454" }
+                                ]}
+                                labelStyle={[styles.button]}
+                                uppercase
+                                onPress={() => handleChangeStatus(entries?.status === "open" ? "closed" : "open")}
+                                mode="text"
+                            >
+                                {entries?.status === "open" ? "Opened" : "Closed"}
+                            </Button>
+                            <View
+                                style={[
+                                    styles.footerBox,
+                                    { backgroundColor: entries?.status === "open" ? "#40AA71" : "#CE5454" }
+                                ]}
+                            />
+                        </View>
                     </View>
                 </View>
-                <View style={[styles.footer]}>
-                    <Button
-                        style={[styles.button, { backgroundColor: entries?.status === "open" ? "#40AA71" : "#CE5454" }]}
-                        labelStyle={[styles.button]}
-                        uppercase
-                        onPress={() => handleChangeStatus(entries.id, entries?.status === "open" ? "closed" : "open")}
-                        mode="text"
-                    >
-                        {entries?.status === "open" ? "Opened" : "Closed"}
-                    </Button>
-                    <View
-                        style={[
-                            styles.footerBox,
-                            { backgroundColor: entries?.status === "open" ? "#40AA71" : "#CE5454" }
-                        ]}
-                    />
-                </View>
-            </View>
-        </View>
+            </TouchableWithoutFeedback>
+            <EntryModal
+                visible={modalVisible}
+                onClose={() => setModalVisible(false)}
+                handleDeleteEntry={handleDeleteEntry}
+                onAddKeeper={handleAddKeeper}
+                onRemoveKeeper={handleRemoveKeeper}
+                doorKeepers={doorKeepers}
+            />
+        </>
     );
 };
 

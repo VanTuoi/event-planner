@@ -1,17 +1,17 @@
-export interface Entry {
-    id: string;
-    name: string;
-    totalIn: number;
-    totalOut: number;
-    status: "open" | "close";
-}
-
 export interface DoorKeeper {
     id: string;
     name: string;
     email: string;
 }
 
+export interface Entry {
+    id: string;
+    name: string;
+    totalIn: number;
+    totalOut: number;
+    status: "open" | "close";
+    doorKeepers: DoorKeeper[];
+}
 export interface Notification {
     type: "email" | "sms";
     message: string;
@@ -29,7 +29,6 @@ export interface Event {
     description: string;
     status: "scheduled" | "ongoing" | "completed" | "cancelled";
     entries: Entry[];
-    doorKeepers: DoorKeeper[];
     notifications: Notification[];
 }
 

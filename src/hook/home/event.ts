@@ -19,30 +19,35 @@ const fakeEventApi = (): Promise<Event[]> =>
                         {
                             id: "entry-1",
                             name: "Main Entrance 1",
-                            totalIn: 355,
-                            totalOut: 50,
-                            status: "open"
+                            totalIn: 800,
+                            totalOut: 100,
+                            status: "open",
+                            doorKeepers: [
+                                { id: "doorkeeper-1", name: "John Doe", email: "johndoe@example.com" },
+                                { id: "doorkeeper-2", name: "Alice Johnson", email: "alicejohnson@example.com" }
+                            ]
                         },
                         {
                             id: "entry-2",
                             name: "Main Entrance 2",
-                            totalIn: 405,
-                            totalOut: 0,
-                            status: "close"
-                        }
-                    ],
-                    doorKeepers: [
-                        {
-                            id: "doorkeeper-1",
-                            name: "John Doe",
-                            email: "johndoe@example.com"
+                            totalIn: 150,
+                            totalOut: 50,
+                            status: "close",
+                            doorKeepers: [
+                                { id: "doorkeeper-3", name: "Michael Smith", email: "michaelsmith@example.com" }
+                            ]
                         }
                     ],
                     notifications: [
                         {
                             type: "email",
-                            message: "The event is approaching!",
-                            status: "pending"
+                            message: "Don't miss the Music Concert tonight!",
+                            status: "sent"
+                        },
+                        {
+                            type: "sms",
+                            message: "Reminder: Concert starts at 6 PM!",
+                            status: "sent"
                         }
                     ]
                 },
@@ -59,51 +64,66 @@ const fakeEventApi = (): Promise<Event[]> =>
                     entries: [
                         {
                             id: "entry-1",
-                            name: "Gallery Entrance floor 1",
+                            name: "Gallery Entrance Floor 1",
                             totalIn: 0,
                             totalOut: 0,
-                            status: "open"
+                            status: "open",
+                            doorKeepers: [{ id: "doorkeeper-4", name: "Emily Davis", email: "emilydavis@example.com" }]
                         },
                         {
                             id: "entry-2",
-                            name: "Gallery Entrance floor 2",
+                            name: "Gallery Entrance Floor 2",
                             totalIn: 0,
                             totalOut: 0,
-                            status: "open"
-                        },
-                        {
-                            id: "entry-3",
-                            name: "Gallery Entrance floor 3",
-                            totalIn: 0,
-                            totalOut: 0,
-                            status: "open"
-                        },
-                        {
-                            id: "entry-4",
-                            name: "Gallery Entrance floor 4",
-                            totalIn: 0,
-                            totalOut: 0,
-                            status: "open"
-                        },
-                        {
-                            id: "entry-5",
-                            name: "Gallery Entrance floor 5",
-                            totalIn: 0,
-                            totalOut: 0,
-                            status: "open"
+                            status: "open",
+                            doorKeepers: [{ id: "doorkeeper-5", name: "Chris Brown", email: "chrisbrown@example.com" }]
                         }
                     ],
-                    doorKeepers: [
+                    notifications: [
                         {
-                            id: "doorkeeper-2",
-                            name: "Alice Smith",
-                            email: "alicesmith@example.com"
+                            type: "email",
+                            message: "The Art Exhibition is starting soon. See you there!",
+                            status: "pending"
+                        }
+                    ]
+                },
+                {
+                    id: "3",
+                    titleEvent: "Tech Conference 2025",
+                    venue: "Convention Center Hall A",
+                    maxParticipants: 2000,
+                    alertPoint: 1500,
+                    startTime: "2025-03-15T09:00:00Z",
+                    endTime: "2025-03-15T17:00:00Z",
+                    description: "A conference showcasing the latest advancements in technology.",
+                    status: "scheduled",
+                    entries: [
+                        {
+                            id: "entry-1",
+                            name: "Main Entrance",
+                            totalIn: 0,
+                            totalOut: 0,
+                            status: "open",
+                            doorKeepers: [
+                                { id: "doorkeeper-6", name: "Sarah Wilson", email: "sarahwilson@example.com" },
+                                { id: "doorkeeper-7", name: "David Green", email: "davidgreen@example.com" }
+                            ]
+                        },
+                        {
+                            id: "entry-2",
+                            name: "Side Entrance",
+                            totalIn: 0,
+                            totalOut: 0,
+                            status: "open",
+                            doorKeepers: [
+                                { id: "doorkeeper-8", name: "Laura Martinez", email: "lauramartinez@example.com" }
+                            ]
                         }
                     ],
                     notifications: [
                         {
                             type: "sms",
-                            message: "Reminder: The Art Exhibition starts tomorrow!",
+                            message: "Tech Conference is just around the corner. Save the date!",
                             status: "sent"
                         }
                     ]
