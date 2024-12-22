@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import AppLayout from "~/layout";
-import { AboutScreen, DetailScreen, HomeScreen, LoginScreen, RegisterScreen } from "~/screen";
+import { AboutScreen, DetailScreen, EventSettingScreen, HomeScreen, LoginScreen, RegisterScreen } from "~/screen";
 import { useAuthStore } from "~/store";
 import { RootStackParamList } from "~/types/route";
 
@@ -19,7 +19,11 @@ const DetailScreenComponent = () => (
     </AppLayout>
 );
 
-const SettingEventScreenComponent = () => <AppLayout>{null}</AppLayout>;
+const SettingEventScreenComponent = () => (
+    <AppLayout>
+        <EventSettingScreen />
+    </AppLayout>
+);
 
 const AboutScreenComponent = () => (
     <AppLayout>
