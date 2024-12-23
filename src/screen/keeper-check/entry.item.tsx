@@ -1,5 +1,5 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import React from "react";
+import React, { memo } from "react";
 import { StyleSheet, Text, View, ViewStyle } from "react-native";
 import { IconButton, useTheme } from "react-native-paper";
 import { Entry } from "~/types/event";
@@ -23,7 +23,7 @@ const CloseIcon = () => (
     </View>
 );
 
-export const EntryComponent = ({ entries, marginStyle }: EntryComponentProps) => {
+export const EntryComponent = memo(({ entries, marginStyle }: EntryComponentProps) => {
     const { colors } = useTheme();
 
     const handleChangeStatus = (status: string) => {
@@ -56,7 +56,7 @@ export const EntryComponent = ({ entries, marginStyle }: EntryComponentProps) =>
             </View>
         </View>
     );
-};
+});
 
 const styles = StyleSheet.create({
     container: {

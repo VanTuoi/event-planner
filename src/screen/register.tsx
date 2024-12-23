@@ -1,6 +1,6 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { Button, Snackbar, Text, useTheme } from "react-native-paper";
 import * as Yup from "yup";
@@ -17,7 +17,7 @@ const RegisterSchema = Yup.object().shape({
         .required("Confirm Password is required")
 });
 
-export const RegisterScreen: React.FC = () => {
+export const RegisterScreen: React.FC = memo(() => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const { colors } = useTheme();
 
@@ -105,7 +105,7 @@ export const RegisterScreen: React.FC = () => {
             )}
         </Formik>
     );
-};
+});
 
 const styles = StyleSheet.create({
     container: {

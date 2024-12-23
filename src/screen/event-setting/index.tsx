@@ -1,12 +1,12 @@
 import { RouteProp, useRoute } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, Dialog, Portal, useTheme } from "react-native-paper";
 import { EventCreate } from "~/types/event";
 import { RootStackParamList } from "~/types/route";
 import { UpdateEvent } from "./update";
 
-export const EventSettingScreen = () => {
+export const EventSettingScreen = memo(() => {
     const { colors } = useTheme();
     const route = useRoute<RouteProp<RootStackParamList, "event-detail">>();
 
@@ -64,7 +64,7 @@ export const EventSettingScreen = () => {
             </Portal>
         </View>
     );
-};
+});
 
 const styles = StyleSheet.create({
     container: {

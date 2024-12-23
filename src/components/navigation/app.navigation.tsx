@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React from "react";
+import React, { memo } from "react";
 import AppLayout from "~/layout/home-layout";
 import KeeperAppLayout from "~/layout/keeper-layout";
 
@@ -106,7 +106,7 @@ const KeeperLayout = () => (
     </Stack.Navigator>
 );
 
-const AppNavigation = () => {
+const AppNavigation = memo(() => {
     const { user } = useAuthStore();
 
     const getStackScreen = () => {
@@ -130,6 +130,6 @@ const AppNavigation = () => {
             {getStackScreen()}
         </Stack.Navigator>
     );
-};
+});
 
 export default AppNavigation;

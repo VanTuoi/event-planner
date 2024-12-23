@@ -1,12 +1,12 @@
 import { RouteProp, useRoute } from "@react-navigation/native";
-import React from "react";
+import React, { memo } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, useTheme } from "react-native-paper";
 import { RootStackParamList } from "~/types/route";
 import { EntryComponent } from "./entry.item";
 import { Statistic } from "./statistic";
 
-export const KeeperCheckScreen = () => {
+export const KeeperCheckScreen = memo(() => {
     const { colors } = useTheme();
     const route = useRoute<RouteProp<RootStackParamList, "keeper-check">>();
 
@@ -40,7 +40,7 @@ export const KeeperCheckScreen = () => {
             </View>
         </View>
     );
-};
+});
 
 const styles = StyleSheet.create({
     container: {

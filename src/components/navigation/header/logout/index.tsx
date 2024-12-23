@@ -1,9 +1,9 @@
-import * as React from "react";
+import React, { memo } from "react";
 import { Button, useTheme } from "react-native-paper";
 import { useLogout } from "~/hook/auth";
 import { useAuthStore } from "~/store";
 
-const Logout = () => {
+const Logout = memo(() => {
     const { colors } = useTheme();
     const { logout } = useAuthStore();
     const { handleLogout, isLoading } = useLogout();
@@ -35,6 +35,6 @@ const Logout = () => {
             Log out
         </Button>
     );
-};
+});
 
 export default Logout;

@@ -27,7 +27,7 @@ interface CreateEventProps {
     onCreateEvent: (event: EventCreate) => void;
 }
 
-export const CreateEvent: React.FC<CreateEventProps> = ({ modalVisible, setModalVisible, onCreateEvent }) => {
+const CreateEventComponent: React.FC<CreateEventProps> = ({ modalVisible, setModalVisible, onCreateEvent }) => {
     const { colors } = useTheme();
 
     const handleSubmit = (values: EventCreate) => {
@@ -136,6 +136,8 @@ export const CreateEvent: React.FC<CreateEventProps> = ({ modalVisible, setModal
         </Portal>
     );
 };
+
+export const CreateEvent = React.memo(CreateEventComponent);
 
 const styles = StyleSheet.create({
     dialog: {

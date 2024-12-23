@@ -1,11 +1,11 @@
-import React from "react";
+import React, { memo } from "react";
 import { FlatList, Image, RefreshControl, StyleSheet, Text, View } from "react-native";
 import { useTheme } from "react-native-paper";
 import homeImage from "~/assets/images/home.png";
 import { useEvent } from "~/hook/home/event";
 import { EventComponent } from "./event.item";
 
-export const KeeperHomeScreen = () => {
+export const KeeperHomeScreen = memo(() => {
     const { colors } = useTheme();
     const { events, isLoading, fetchEvents } = useEvent();
 
@@ -41,7 +41,7 @@ export const KeeperHomeScreen = () => {
             <View style={styles.mainContent}>{events && events.length === 0 ? renderEmptyList() : renderList()}</View>
         </View>
     );
-};
+});
 
 const styles = StyleSheet.create({
     container: {

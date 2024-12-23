@@ -1,6 +1,6 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { Button, Snackbar, Text, useTheme } from "react-native-paper";
 import * as Yup from "yup";
@@ -14,7 +14,7 @@ const LoginSchema = Yup.object().shape({
     password: Yup.string().min(6, "Password too short").required("Password is required")
 });
 
-export const LoginScreen: React.FC = () => {
+export const LoginScreen: React.FC = memo(() => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const { colors } = useTheme();
 
@@ -91,7 +91,7 @@ export const LoginScreen: React.FC = () => {
             )}
         </Formik>
     );
-};
+});
 
 const styles = StyleSheet.create({
     container: {

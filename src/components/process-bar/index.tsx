@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { memo, useEffect, useRef } from "react";
 import { Animated, StyleSheet, View } from "react-native";
 
 interface CustomProgressBarProps {
@@ -56,4 +56,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default CustomProgressBar;
+export default memo(CustomProgressBar);

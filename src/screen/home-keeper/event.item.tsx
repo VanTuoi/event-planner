@@ -1,11 +1,11 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { memo } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, useTheme } from "react-native-paper";
 import { Event } from "~/types/event";
 import { RootStackParamList } from "~/types/route";
 
-export const EventComponent = ({ event }: { event: Event }) => {
+export const EventComponent = memo(({ event }: { event: Event }) => {
     const navigation: NavigationProp<RootStackParamList> = useNavigation();
     const { colors } = useTheme();
 
@@ -69,7 +69,7 @@ export const EventComponent = ({ event }: { event: Event }) => {
             </View>
         </View>
     );
-};
+});
 
 const styles = StyleSheet.create({
     container: {

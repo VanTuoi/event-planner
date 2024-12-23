@@ -1,10 +1,10 @@
-import React, { useMemo } from "react";
+import React, { memo, useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { useTheme } from "react-native-paper";
 import CustomProgressBar from "~/components/process-bar";
 import { Event } from "~/types/event";
 
-export const Statistic = ({ event }: { event: Event }) => {
+export const Statistic = memo(({ event }: { event: Event }) => {
     const { colors } = useTheme();
 
     const totalGuestsIn = useMemo(
@@ -78,7 +78,7 @@ export const Statistic = ({ event }: { event: Event }) => {
             </View>
         </View>
     );
-};
+});
 
 const styles = StyleSheet.create({
     container: {

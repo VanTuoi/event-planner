@@ -1,5 +1,5 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from "react-native";
 import { Button, useTheme } from "react-native-paper";
 import { useAuthStore } from "~/store";
@@ -12,7 +12,7 @@ interface EntryComponentProps {
     marginStyle?: ViewStyle;
 }
 
-export const EntryComponent = ({ entries, event, marginStyle }: EntryComponentProps) => {
+export const EntryComponent = memo(({ entries, event, marginStyle }: EntryComponentProps) => {
     const { colors } = useTheme();
     const navigation: NavigationProp<RootStackParamList> = useNavigation();
     const { user } = useAuthStore();
@@ -74,7 +74,7 @@ export const EntryComponent = ({ entries, event, marginStyle }: EntryComponentPr
             </View>
         </TouchableWithoutFeedback>
     );
-};
+});
 
 const styles = StyleSheet.create({
     container: {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { FlatList, Image, RefreshControl, StyleSheet, Text, View } from "react-native";
 import { Button, useTheme } from "react-native-paper";
 import homeImage from "~/assets/images/home.png";
@@ -7,7 +7,7 @@ import { EventCreate } from "~/types/event";
 import { CreateEvent } from "./create";
 import { EventComponent } from "./event.item";
 
-export const HomeScreen = () => {
+export const HomeScreen = memo(() => {
     const { colors } = useTheme();
     const { events, isLoading, fetchEvents } = useEvent();
 
@@ -59,7 +59,7 @@ export const HomeScreen = () => {
             />
         </View>
     );
-};
+});
 
 const styles = StyleSheet.create({
     container: {

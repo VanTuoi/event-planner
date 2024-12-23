@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Button, useTheme } from "react-native-paper";
 import * as Yup from "yup";
@@ -28,12 +28,7 @@ interface UpdateEventProps {
     onSave: (event: EventCreate) => void;
 }
 
-export const UpdateEvent: React.FC<UpdateEventProps> = ({
-    onSave,
-    onDelete,
-    onDownloadStatistics,
-    initialValuesToProps
-}) => {
+const UpdateEvent: React.FC<UpdateEventProps> = ({ onSave, onDelete, onDownloadStatistics, initialValuesToProps }) => {
     const { colors } = useTheme();
 
     const handleSubmit = (values: EventCreate) => {
@@ -166,6 +161,10 @@ export const UpdateEvent: React.FC<UpdateEventProps> = ({
         </View>
     );
 };
+
+export const MemoizedUpdateEvent = memo(UpdateEvent);
+
+export { UpdateEvent };
 
 const styles = StyleSheet.create({
     container: {
