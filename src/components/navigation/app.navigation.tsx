@@ -1,11 +1,41 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import AppLayout from "~/layout";
-import { AboutScreen, DetailScreen, EventSettingScreen, HomeScreen, LoginScreen, RegisterScreen } from "~/screen";
+import AppLayout from "~/layout/home-layout";
+import KeeperAppLayout from "~/layout/keeper-layout";
+
+import {
+    AboutScreen,
+    DetailScreen,
+    EventSettingScreen,
+    HomeScreen,
+    KeeperCheckScreen,
+    KeeperDetailScreen,
+    KeeperHomeScreen,
+    LoginScreen,
+    RegisterScreen
+} from "~/screen";
 import { useAuthStore } from "~/store";
 import { RootStackParamList } from "~/types/route";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
+
+const KeeperHomeScreenComponent = () => (
+    <KeeperAppLayout>
+        <KeeperHomeScreen />
+    </KeeperAppLayout>
+);
+
+const KeeperDetailScreenComponent = () => (
+    <KeeperAppLayout>
+        <KeeperDetailScreen />
+    </KeeperAppLayout>
+);
+
+const KeeperCheckScreenComponent = () => (
+    <KeeperAppLayout>
+        <KeeperCheckScreen />
+    </KeeperAppLayout>
+);
 
 const HomeScreenComponent = () => (
     <AppLayout>
@@ -55,16 +85,49 @@ const HomeLayout = () => (
     </Stack.Navigator>
 );
 
+const KeeperLayout = () => (
+    <Stack.Navigator screenOptions={{ animation: "fade_from_bottom" }}>
+        <Stack.Screen
+            name="home"
+            component={KeeperHomeScreenComponent}
+            options={{ title: "Keeper Home", headerShown: false }}
+        />
+        <Stack.Screen
+            name="keeper-event-detail"
+            component={KeeperDetailScreenComponent}
+            options={{ title: "Event Detail", headerShown: false }}
+        />
+        <Stack.Screen
+            name="keeper-check"
+            component={KeeperCheckScreenComponent}
+            options={{ title: "Check", headerShown: false }}
+        />
+        <Stack.Screen name="about" component={AboutScreenComponent} options={{ title: "About", headerShown: false }} />
+    </Stack.Navigator>
+);
+
 const AppNavigation = () => {
-    const { isLoggedIn } = useAuthStore();
+    const { user } = useAuthStore();
+
+    const getStackScreen = () => {
+        if (!user) {
+            return <Stack.Screen name="authStack" component={AuthStack} options={{ headerShown: false }} />;
+        }
+
+        if (user.role === "admin") {
+            return <Stack.Screen name="homeLayout" component={HomeLayout} options={{ headerShown: false }} />;
+        }
+
+        return <Stack.Screen name="keeperStack" component={KeeperLayout} options={{ headerShown: false }} />;
+    };
 
     return (
-        <Stack.Navigator screenOptions={{ animation: isLoggedIn ? "slide_from_right" : "slide_from_left" }}>
-            {isLoggedIn ? (
-                <Stack.Screen name="homeLayout" component={HomeLayout} options={{ headerShown: false }} />
-            ) : (
-                <Stack.Screen name="authStack" component={AuthStack} options={{ headerShown: false }} />
-            )}
+        <Stack.Navigator
+            screenOptions={{
+                animation: user ? "slide_from_right" : "slide_from_left"
+            }}
+        >
+            {getStackScreen()}
         </Stack.Navigator>
     );
 };

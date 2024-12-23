@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useAuthStore } from "~/store";
+import { User } from "~/types/user";
 
 interface LoginResponse {
     statusCode: number;
@@ -6,9 +8,7 @@ interface LoginResponse {
     data: {
         message?: string;
         error?: string;
-        user?: {
-            email: string;
-        };
+        user?: User;
     };
 }
 
@@ -19,7 +19,33 @@ const fakeLoginApi = (email: string, password: string): Promise<LoginResponse> =
                 resolve({
                     statusCode: 200,
                     statusText: "OK",
-                    data: { message: "Login successful!", user: { email } }
+                    data: {
+                        message: "Login successful!",
+                        user: {
+                            id: "doorkeeper-1",
+                            name: "John Doe",
+                            email,
+                            token: "fake-token",
+                            refreshToken: "fake-refresh-token",
+                            role: "keeper"
+                        }
+                    }
+                });
+            } else if (email === "admin@gmail.com" && password === "123456") {
+                resolve({
+                    statusCode: 200,
+                    statusText: "OK",
+                    data: {
+                        message: "Login successful!",
+                        user: {
+                            id: "2",
+                            name: "Admin User",
+                            email,
+                            token: "admin-token",
+                            refreshToken: "admin-refresh-token",
+                            role: "admin"
+                        }
+                    }
                 });
             } else {
                 resolve({
@@ -40,6 +66,7 @@ interface UseLoginReturn {
 export const useLogin = (): UseLoginReturn => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const login = useAuthStore((state) => state.login);
 
     const handleLogin = async (email: string, password: string): Promise<LoginResponse> => {
         setIsLoading(true);
@@ -47,7 +74,9 @@ export const useLogin = (): UseLoginReturn => {
 
         try {
             const response = await fakeLoginApi(email, password);
-            if (response.statusCode !== 200) {
+            if (response.statusCode === 200 && response.data.user) {
+                login(response.data.user);
+            } else {
                 setError(response.data.error ?? "An error occurred");
             }
             return response;
