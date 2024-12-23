@@ -2,6 +2,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import React, { useRef, useState } from "react";
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useTheme } from "react-native-paper";
+import { useAuthStore } from "~/store";
 import SelectLanguage from "./language";
 import Logout from "./logout";
 
@@ -9,7 +10,7 @@ export const AppHeader = () => {
     const [isExpanded, setIsExpanded] = useState(false);
     const heightAnim = useRef(new Animated.Value(60)).current;
     const { colors, fonts } = useTheme();
-
+    const { user } = useAuthStore();
     const toggleHeader = () => {
         if (isExpanded) {
             Animated.timing(heightAnim, {
@@ -49,6 +50,7 @@ export const AppHeader = () => {
                 <View style={styles.hiddenContent}>
                     <Logout />
                     <SelectLanguage />
+                    <Text style={[styles.welcome, { color: colors.background }]}>Welcome {user?.name}</Text>
                 </View>
             ) : null}
         </Animated.View>
@@ -68,6 +70,7 @@ const styles = StyleSheet.create({
         paddingVertical: 15
     },
     title: {
+        textTransform: "uppercase",
         flex: 1,
         textAlign: "center",
         fontSize: 20
@@ -77,5 +80,11 @@ const styles = StyleSheet.create({
     },
     logoutButton: {
         fontSize: 16
+    },
+    welcome: {
+        width: "100%",
+        textAlign: "right",
+        fontSize: 14,
+        fontWeight: "bold"
     }
 });

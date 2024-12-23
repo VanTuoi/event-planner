@@ -7,7 +7,6 @@ import * as Yup from "yup";
 import loginImage from "~/assets/images/login.png";
 import { InputPassword, InputText } from "~/components/inputs";
 import { useLogin } from "~/hook/auth/login";
-import { useAuthStore } from "~/store";
 import { RootStackParamList } from "~/types/route";
 
 const LoginSchema = Yup.object().shape({
@@ -17,7 +16,6 @@ const LoginSchema = Yup.object().shape({
 
 export const LoginScreen: React.FC = () => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-    const { login } = useAuthStore();
     const { colors } = useTheme();
 
     const { handleLogin, isLoading, error } = useLogin();
@@ -34,10 +32,7 @@ export const LoginScreen: React.FC = () => {
             initialValues={{ email: "test@example.com", password: "123456" }}
             validationSchema={LoginSchema}
             onSubmit={async (values) => {
-                const isSuccess = await handleLogin(values.email, values.password);
-                if (isSuccess?.statusText === "OK") {
-                    login();
-                }
+                await handleLogin(values.email, values.password);
             }}
         >
             {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
