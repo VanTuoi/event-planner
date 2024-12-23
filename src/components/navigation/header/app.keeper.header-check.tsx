@@ -1,11 +1,11 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useTheme } from "react-native-paper";
 import { RootStackParamList } from "~/types/route";
 
-export const KeeperAppHeaderCheck = () => {
+export const KeeperAppHeaderCheck = memo(() => {
     const { colors, fonts } = useTheme();
     const navigation = useNavigation();
 
@@ -45,7 +45,7 @@ export const KeeperAppHeaderCheck = () => {
             </View>
         </View>
     );
-};
+});
 
 const styles = StyleSheet.create({
     container: {

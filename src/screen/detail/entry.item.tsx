@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from "react-native";
 import { Button, useTheme } from "react-native-paper";
 import { DoorKeeper, Entry } from "~/types/event";
@@ -9,7 +9,7 @@ interface EntryComponentProps {
     marginStyle?: ViewStyle;
 }
 
-export const EntryComponent = ({ entries, marginStyle }: EntryComponentProps) => {
+export const EntryComponent = memo(({ entries, marginStyle }: EntryComponentProps) => {
     const { colors } = useTheme();
     const [modalVisible, setModalVisible] = useState(false);
     const [doorKeepers, setDoorKeepers] = useState<DoorKeeper[]>(entries.doorKeepers || []);
@@ -85,7 +85,7 @@ export const EntryComponent = ({ entries, marginStyle }: EntryComponentProps) =>
             />
         </>
     );
-};
+});
 
 const styles = StyleSheet.create({
     container: {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, IconButton, Modal, Portal, TextInput, useTheme } from "react-native-paper";
 import { DoorKeeper } from "~/types/event";
@@ -12,101 +12,96 @@ interface EntryModalProps {
     doorKeepers: DoorKeeper[];
 }
 
-export const EntryModal = ({
-    visible,
-    onClose,
-    onAddKeeper,
-    onRemoveKeeper,
-    doorKeepers,
-    handleDeleteEntry
-}: EntryModalProps) => {
-    const { colors } = useTheme();
-    const [keeperId, setKeeperId] = useState("");
-    const [keeperEmail, setKeeperEmail] = useState("");
+export const EntryModal = memo(
+    ({ visible, onClose, onAddKeeper, onRemoveKeeper, doorKeepers, handleDeleteEntry }: EntryModalProps) => {
+        const { colors } = useTheme();
+        const [keeperId, setKeeperId] = useState("");
+        const [keeperEmail, setKeeperEmail] = useState("");
 
-    const handleAddKeeper = () => {
-        if (!keeperId.trim() && !keeperEmail.trim()) {
-            return;
-        }
+        const handleAddKeeper = () => {
+            if (!keeperId.trim() && !keeperEmail.trim()) {
+                return;
+            }
 
-        const newKeeper: DoorKeeper = {
-            id: keeperId || `auto-${Date.now()}`,
-            name: `Keeper ${doorKeepers.length + 1}`,
-            email: keeperEmail
+            const newKeeper: DoorKeeper = {
+                id: keeperId || `auto-${Date.now()}`,
+                name: `Keeper ${doorKeepers.length + 1}`,
+                email: keeperEmail
+            };
+
+            onAddKeeper(newKeeper);
+            setKeeperId("");
+            setKeeperEmail("");
         };
 
-        onAddKeeper(newKeeper);
-        setKeeperId("");
-        setKeeperEmail("");
-    };
-
-    return (
-        <Portal>
-            <Modal visible={visible} onDismiss={onClose} contentContainerStyle={styles.modal}>
-                <View style={styles.header}>
-                    <Text style={styles.title}>Entry Config</Text>
-                    <IconButton
-                        icon="close"
-                        size={24}
-                        onPress={onClose}
-                        style={styles.closeButton}
-                        iconColor={colors.primary}
-                    />
-                </View>
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        mode="outlined"
-                        style={styles.input}
-                        placeholder="Door keeper’s id"
-                        value={keeperId}
-                        onChangeText={setKeeperId}
-                    />
-                    <TextInput
-                        mode="outlined"
-                        style={styles.input}
-                        placeholder="Door keeper’s email"
-                        value={keeperEmail}
-                        onChangeText={setKeeperEmail}
-                    />
-                    <Button
-                        mode="contained"
-                        style={styles.button}
-                        labelStyle={[styles.buttonLabel]}
-                        onPress={handleAddKeeper}
-                    >
-                        Add keeper
-                    </Button>
-                </View>
-                <Text style={styles.subTitle}>Keeper(s)</Text>
-                {doorKeepers.map((keeper) => (
-                    <View key={keeper.id} style={[styles.keeperRow, { borderColor: colors.primaryContainer }]}>
-                        <View style={[styles.keeperRowTitle]}>
-                            <Text style={[styles.keeperRowName, { color: colors.primaryContainer }]}>
-                                {keeper.name} ({keeper.id})
-                            </Text>
-                            <Text style={[styles.keeperRowEmail]}>{keeper.email}</Text>
-                        </View>
+        return (
+            <Portal>
+                <Modal visible={visible} onDismiss={onClose} contentContainerStyle={styles.modal}>
+                    <View style={styles.header}>
+                        <Text style={styles.title}>Entry Config</Text>
                         <IconButton
-                            icon="trash-can-outline"
-                            onPress={() => onRemoveKeeper(keeper.id)}
-                            style={[styles.iconButton, { marginLeft: 16 }]}
-                            iconColor={colors.error}
+                            icon="close"
+                            size={24}
+                            onPress={onClose}
+                            style={styles.closeButton}
+                            iconColor={colors.primary}
                         />
                     </View>
-                ))}
-                {doorKeepers.length === 0 ? <Text style={styles.subTitleNoGateKeeper}> No keeper yet</Text> : null}
-                <Button
-                    mode="outlined"
-                    style={[styles.buttonDelete, { borderColor: colors.error }]}
-                    labelStyle={[styles.buttonDeleteLabel, { color: colors.error }]}
-                    onPress={handleDeleteEntry}
-                >
-                    Delete entry
-                </Button>
-            </Modal>
-        </Portal>
-    );
-};
+                    <View style={styles.inputContainer}>
+                        <TextInput
+                            mode="outlined"
+                            style={styles.input}
+                            placeholder="Door keeper’s id"
+                            value={keeperId}
+                            onChangeText={setKeeperId}
+                        />
+                        <TextInput
+                            mode="outlined"
+                            style={styles.input}
+                            placeholder="Door keeper’s email"
+                            value={keeperEmail}
+                            onChangeText={setKeeperEmail}
+                        />
+                        <Button
+                            mode="contained"
+                            style={styles.button}
+                            labelStyle={[styles.buttonLabel]}
+                            onPress={handleAddKeeper}
+                        >
+                            Add keeper
+                        </Button>
+                    </View>
+                    <Text style={styles.subTitle}>Keeper(s)</Text>
+                    {doorKeepers.map((keeper) => (
+                        <View key={keeper.id} style={[styles.keeperRow, { borderColor: colors.primaryContainer }]}>
+                            <View style={[styles.keeperRowTitle]}>
+                                <Text style={[styles.keeperRowName, { color: colors.primaryContainer }]}>
+                                    {keeper.name} ({keeper.id})
+                                </Text>
+                                <Text style={[styles.keeperRowEmail]}>{keeper.email}</Text>
+                            </View>
+                            <IconButton
+                                icon="trash-can-outline"
+                                onPress={() => onRemoveKeeper(keeper.id)}
+                                style={[styles.iconButton, { marginLeft: 16 }]}
+                                iconColor={colors.error}
+                            />
+                        </View>
+                    ))}
+                    {doorKeepers.length === 0 ? <Text style={styles.subTitleNoGateKeeper}> No keeper yet</Text> : null}
+                    <Button
+                        mode="outlined"
+                        style={[styles.buttonDelete, { borderColor: colors.error }]}
+                        labelStyle={[styles.buttonDeleteLabel, { color: colors.error }]}
+                        onPress={handleDeleteEntry}
+                    >
+                        Delete entry
+                    </Button>
+                </Modal>
+            </Portal>
+        );
+    }
+);
 
 const styles = StyleSheet.create({
     modal: {

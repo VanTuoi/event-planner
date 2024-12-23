@@ -1,12 +1,12 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import React, { useRef, useState } from "react";
+import React, { memo, useRef, useState } from "react";
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useAuthStore } from "~/store";
 import SelectLanguage from "./language";
 import Logout from "./logout";
 
-export const AppHeader = () => {
+export const AppHeader = memo(() => {
     const [isExpanded, setIsExpanded] = useState(false);
     const heightAnim = useRef(new Animated.Value(60)).current;
     const { colors, fonts } = useTheme();
@@ -55,7 +55,7 @@ export const AppHeader = () => {
             ) : null}
         </Animated.View>
     );
-};
+});
 
 const styles = StyleSheet.create({
     container: {

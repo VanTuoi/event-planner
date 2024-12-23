@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { JSX, useEffect, useState } from "react";
+import React, { JSX, memo, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { useTheme } from "react-native-paper";
 import { AppHeader } from "~/components/navigation/header";
@@ -60,4 +60,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default KeeperAppLayout;
+export default memo(KeeperAppLayout);

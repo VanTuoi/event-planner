@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import React from "react";
+import React, { memo } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-paper";
 import * as Yup from "yup";
@@ -27,7 +27,7 @@ interface EventFormProps {
     onCancel?: () => void;
 }
 
-export const EventForm: React.FC<EventFormProps> = ({
+const EventForm: React.FC<EventFormProps> = ({
     initialValues = {
         titleEvent: "",
         venue: "",
@@ -96,6 +96,10 @@ export const EventForm: React.FC<EventFormProps> = ({
         )}
     </Formik>
 );
+
+export const MemoizedEventForm = memo(EventForm);
+
+export { EventForm };
 
 const styles = StyleSheet.create({
     formContainer: {

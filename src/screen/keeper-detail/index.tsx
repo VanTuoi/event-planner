@@ -1,12 +1,12 @@
 import { RouteProp, useRoute } from "@react-navigation/native";
-import React from "react";
+import React, { memo } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { useTheme } from "react-native-paper";
 import { RootStackParamList } from "~/types/route";
 import { EntryComponent } from "./entry.item";
 import { Statistic } from "./statistic";
 
-export const KeeperDetailScreen = () => {
+export const KeeperDetailScreen = memo(() => {
     const { colors } = useTheme();
     const route = useRoute<RouteProp<RootStackParamList, "event-detail">>();
 
@@ -37,7 +37,7 @@ export const KeeperDetailScreen = () => {
             </View>
         </View>
     );
-};
+});
 
 const styles = StyleSheet.create({
     container: {
