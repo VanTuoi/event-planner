@@ -1,38 +1,31 @@
+import auth from "@react-native-firebase/auth";
 import { useState } from "react";
+import { saveUserToFireStore } from "~/services";
+import { ApiResponse } from "~/types/api-response";
+import { User } from "~/types/user";
 
-interface RegisterResponse {
-    statusCode: number;
-    statusText: string;
-    data: {
-        message?: string;
-        error?: string;
-        user?: {
-            email: string;
-        };
+export interface RegisterSuccessData {
+    message: string;
+    user: {
+        email: string;
     };
 }
 
-const fakeRegisterApi = (email: string, password: string): Promise<RegisterResponse> =>
-    new Promise((resolve) => {
-        setTimeout(() => {
-            if (email === "test@example.com" && password === "123456") {
-                resolve({
-                    statusCode: 200,
-                    statusText: "OK",
-                    data: { message: "Registration successful!", user: { email } }
-                });
-            } else {
-                resolve({
-                    statusCode: 400,
-                    statusText: "Bad Request",
-                    data: { error: "Email is already in use" }
-                });
-            }
-        }, 350);
-    });
+export interface RegisterErrorData {
+    error: string;
+}
+
+interface FirebaseAuthError {
+    code: string;
+    message: string;
+}
 
 interface UseRegisterReturn {
-    handleRegister: (email: string, password: string) => Promise<RegisterResponse>;
+    handleRegister: (
+        email: string,
+        password: string,
+        name: string
+    ) => Promise<ApiResponse<RegisterSuccessData | RegisterErrorData>>;
     isLoading: boolean;
     error: string | null;
 }
@@ -41,23 +34,60 @@ export const useRegister = (): UseRegisterReturn => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const handleRegister = async (email: string, password: string): Promise<RegisterResponse> => {
+    const handleRegister = async (
+        email: string,
+        password: string,
+        name: string
+    ): Promise<ApiResponse<RegisterSuccessData | RegisterErrorData>> => {
         setIsLoading(true);
         setError(null);
 
         try {
-            const response = await fakeRegisterApi(email, password);
-            if (response.statusCode !== 200) {
-                setError(response.data.error ?? "An error occurred");
-            }
-            return response;
-        } catch (err) {
-            console.log("err", err);
-            setError("An unexpected error occurred");
+            const userCredential = await auth().createUserWithEmailAndPassword(email, password);
+            const userId = userCredential.user.uid;
+
+            const role = email === "admin@gmail.com" ? "admin" : "keeper";
+
+            const userData: User = {
+                id: userId,
+                name,
+                email,
+                role
+            };
+
+            await saveUserToFireStore(userId, userData);
+
             return {
-                statusCode: 500,
-                statusText: "Internal Server Error",
-                data: { error: "An unexpected error occurred" }
+                statusCode: 200,
+                statusText: "OK",
+                data: { message: "Registration successful!", user: { email } }
+            };
+        } catch (err) {
+            console.error("Error during registration:", err);
+
+            const firebaseError = err as FirebaseAuthError;
+
+            let errorMessage = "An unexpected error occurred. Please try again.";
+
+            switch (firebaseError.code) {
+                case "auth/email-already-in-use":
+                    errorMessage = "Email is already in use";
+                    break;
+                case "auth/invalid-email":
+                    errorMessage = "Invalid email format";
+                    break;
+                case "auth/weak-password":
+                    errorMessage = "Password is too weak";
+                    break;
+                default:
+                    errorMessage = "Registration failed. Please try again.";
+                    break;
+            }
+
+            return {
+                statusCode: 400,
+                statusText: "Bad Request",
+                data: { error: errorMessage }
             };
         } finally {
             setIsLoading(false);

@@ -10,6 +10,7 @@ import { useRegister } from "~/hook/auth";
 import { RootStackParamList } from "~/types/route";
 
 const RegisterSchema = Yup.object().shape({
+    name: Yup.string().required("Name is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
     password: Yup.string().min(6, "Password too short").required("Password is required"),
     confirmPassword: Yup.string()
@@ -32,12 +33,12 @@ export const RegisterScreen: React.FC = memo(() => {
 
     return (
         <Formik
-            initialValues={{ email: "test@example.com", password: "123456", confirmPassword: "123456" }}
+            initialValues={{ email: "test@example.com", password: "123456", confirmPassword: "123456", name: "Alan" }}
             validationSchema={RegisterSchema}
             onSubmit={async (values) => {
-                const isSuccess = await handleRegister(values.email, values.password);
+                const isSuccess = await handleRegister(values.email, values.password, values.name);
                 if (isSuccess?.statusText === "OK") {
-                    navigation.navigate("login");
+                    // navigation.navigate("login");
                 }
             }}
         >
@@ -48,6 +49,14 @@ export const RegisterScreen: React.FC = memo(() => {
                         <Text variant="headlineMedium" style={styles.title}>
                             Create a new account
                         </Text>
+
+                        <InputText
+                            label="NAME"
+                            value={values.name}
+                            onChangeText={handleChange("name")}
+                            onBlur={handleBlur("name")}
+                            error={touched.name && errors.name}
+                        />
 
                         <InputText
                             label="EMAIL"

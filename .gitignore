@@ -3,6 +3,10 @@
 # dependencies
 node_modules/
 
+#
+android/
+google-services.json
+
 # Expo
 .expo/
 dist/
