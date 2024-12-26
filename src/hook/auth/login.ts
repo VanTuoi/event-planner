@@ -1,92 +1,57 @@
+import axios, { AxiosError } from "axios";
 import { useState } from "react";
 import { useAuthStore } from "~/store";
+import { ApiResponse } from "~/types/api-response";
 import { User } from "~/types/user";
 
-interface LoginResponse {
-    statusCode: number;
-    statusText: string;
-    data: {
-        message?: string;
-        error?: string;
-        user?: User;
-    };
+export interface LoginSuccessData {
+    user: User;
 }
 
-const fakeLoginApi = (email: string, password: string): Promise<LoginResponse> =>
-    new Promise((resolve) => {
-        setTimeout(() => {
-            if (email === "test@example.com" && password === "123456") {
-                resolve({
-                    statusCode: 200,
-                    statusText: "OK",
-                    data: {
-                        message: "Login successful!",
-                        user: {
-                            id: "doorkeeper-1",
-                            name: "John Doe",
-                            email,
-                            token: "fake-token",
-                            refreshToken: "fake-refresh-token",
-                            role: "keeper"
-                        }
-                    }
-                });
-            } else if (email === "admin@gmail.com" && password === "123456") {
-                resolve({
-                    statusCode: 200,
-                    statusText: "OK",
-                    data: {
-                        message: "Login successful!",
-                        user: {
-                            id: "2",
-                            name: "Admin User",
-                            email,
-                            token: "admin-token",
-                            refreshToken: "admin-refresh-token",
-                            role: "admin"
-                        }
-                    }
-                });
-            } else {
-                resolve({
-                    statusCode: 401,
-                    statusText: "Unauthorized",
-                    data: { error: "Invalid email or password" }
-                });
-            }
-        }, 350);
-    });
-
-interface UseLoginReturn {
-    handleLogin: (email: string, password: string) => Promise<LoginResponse>;
-    isLoading: boolean;
-    error: string | null;
+export interface LoginErrorData {
+    message: string;
 }
 
-export const useLogin = (): UseLoginReturn => {
+export const useLogin = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const login = useAuthStore((state) => state.login);
 
-    const handleLogin = async (email: string, password: string): Promise<LoginResponse> => {
+    const handleLogin = async (
+        email: string,
+        password: string
+    ): Promise<ApiResponse<LoginSuccessData | LoginErrorData>> => {
         setIsLoading(true);
         setError(null);
 
         try {
-            const response = await fakeLoginApi(email, password);
-            if (response.statusCode === 200 && response.data.user) {
-                login(response.data.user);
-            } else {
-                setError(response.data.error ?? "An error occurred");
+            const response = await axios.post<ApiResponse<LoginSuccessData>>(
+                `${process.env.EXPO_PUBLIC_API_URL}/users/login`,
+                { email, password }
+            );
+
+            if (response.data.statusCode === 200 && response.data.data.user) {
+                login(response.data.data.user);
             }
-            return response;
+
+            return response.data;
         } catch (err) {
-            console.log("err", err);
-            setError("An unexpected error occurred");
+            if (axios.isAxiosError(err)) {
+                const serverError = err as AxiosError<ApiResponse<LoginErrorData>>;
+                const errorMessage = serverError.response?.data?.statusText || "An unexpected error occurred.";
+                console.log("serverError", serverError);
+                setError(errorMessage);
+                return {
+                    statusCode: serverError.response?.status || 500,
+                    statusText: serverError.response?.statusText || "Internal Server Error",
+                    data: { message: errorMessage }
+                };
+            }
+            setError("An unexpected error occurred. Please try again.");
             return {
                 statusCode: 500,
                 statusText: "Internal Server Error",
-                data: { error: "An unexpected error occurred" }
+                data: { message: "An unexpected error occurred. Please try again." }
             };
         } finally {
             setIsLoading(false);

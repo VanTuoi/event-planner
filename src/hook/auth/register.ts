@@ -1,63 +1,55 @@
+import axios, { AxiosError } from "axios";
 import { useState } from "react";
+import { ApiResponse } from "~/types/api-response";
+import { User } from "~/types/user";
 
-interface RegisterResponse {
-    statusCode: number;
-    statusText: string;
-    data: {
-        message?: string;
-        error?: string;
-        user?: {
-            email: string;
-        };
-    };
+export interface RegisterSuccessData {
+    user: User;
 }
 
-const fakeRegisterApi = (email: string, password: string): Promise<RegisterResponse> =>
-    new Promise((resolve) => {
-        setTimeout(() => {
-            if (email === "test@example.com" && password === "123456") {
-                resolve({
-                    statusCode: 200,
-                    statusText: "OK",
-                    data: { message: "Registration successful!", user: { email } }
-                });
-            } else {
-                resolve({
-                    statusCode: 400,
-                    statusText: "Bad Request",
-                    data: { error: "Email is already in use" }
-                });
-            }
-        }, 350);
-    });
-
-interface UseRegisterReturn {
-    handleRegister: (email: string, password: string) => Promise<RegisterResponse>;
-    isLoading: boolean;
-    error: string | null;
+export interface RegisterErrorData {
+    message: string;
 }
 
-export const useRegister = (): UseRegisterReturn => {
+export const useRegister = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const handleRegister = async (email: string, password: string): Promise<RegisterResponse> => {
+    const handleRegister = async (
+        email: string,
+        password: string,
+        name: string
+    ): Promise<ApiResponse<RegisterSuccessData | RegisterErrorData>> => {
         setIsLoading(true);
         setError(null);
 
         try {
-            const response = await fakeRegisterApi(email, password);
-            if (response.statusCode !== 200) {
-                setError(response.data.error ?? "An error occurred");
-            }
-            return response;
+            const response = await axios.post<ApiResponse<RegisterSuccessData>>(
+                `${process.env.EXPO_PUBLIC_API_URL}/users/register`,
+                {
+                    email,
+                    password,
+                    name
+                }
+            );
+            return response.data;
         } catch (err) {
-            console.log("err", err);
-            setError("An unexpected error occurred");
+            if (axios.isAxiosError(err)) {
+                const serverError = err as AxiosError<ApiResponse<RegisterErrorData>>;
+                const errorMessage = serverError.response?.data?.statusText || "An unexpected error occurred.";
+                console.log("serverError", serverError);
+                setError(errorMessage);
+                return {
+                    statusCode: serverError.response?.status || 500,
+                    statusText: serverError.response?.statusText || "Internal Server Error",
+                    data: { message: errorMessage }
+                };
+            }
+            setError("An unexpected error occurred. Please try again.");
             return {
                 statusCode: 500,
                 statusText: "Internal Server Error",
-                data: { error: "An unexpected error occurred" }
+                data: { message: "An unexpected error occurred. Please try again." }
             };
         } finally {
             setIsLoading(false);
