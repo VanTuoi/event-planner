@@ -1,9 +1,10 @@
 import { Formik } from "formik";
 import React, { memo, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { Button, useTheme } from "react-native-paper";
+import { Button, Snackbar, useTheme } from "react-native-paper";
 import * as Yup from "yup";
 import { InputText, NumberInput } from "~/components/inputs";
+import { useUpdateEvent } from "~/hook/home";
 import { Event, EventCreate } from "~/types/event";
 
 const EventSchema = Yup.object().shape({
@@ -30,9 +31,28 @@ interface UpdateEventProps {
 
 const UpdateEvent: React.FC<UpdateEventProps> = ({ onSave, onDelete, onDownloadStatistics, initialValuesToProps }) => {
     const { colors } = useTheme();
+    const { handleUpdateEvent, isLoading, error } = useUpdateEvent();
 
-    const handleSubmit = (values: EventCreate) => {
+    const [visibleSnackbar, setVisibleSnackbar] = useState(false);
+
+    useEffect(() => {
+        if (error) {
+            setVisibleSnackbar(true);
+        }
+    }, [error]);
+
+    const handleSubmit = async (values: EventCreate) => {
         onSave(values);
+        if (initialValuesToProps) {
+            await handleUpdateEvent(
+                initialValuesToProps?.id,
+                values.titleEvent,
+                values.venue,
+                values.maxParticipants,
+                values.alertPoint,
+                values.numberOfEntries
+            );
+        }
     };
 
     const [initialValues, setInitialValues] = useState<EventCreate>();
@@ -126,8 +146,8 @@ const UpdateEvent: React.FC<UpdateEventProps> = ({ onSave, onDelete, onDownloadS
 
                         <View style={styles.buttonsContainer}>
                             <Button
-                                disabled={!(isValid && dirty && !isSubmitting)}
-                                loading={isSubmitting}
+                                disabled={!(isValid && dirty && !isSubmitting) || isLoading}
+                                loading={isSubmitting || isLoading}
                                 mode="contained"
                                 labelStyle={[{ fontSize: 16 }]}
                                 style={[styles.button]}
@@ -158,6 +178,13 @@ const UpdateEvent: React.FC<UpdateEventProps> = ({ onSave, onDelete, onDownloadS
                     </ScrollView>
                 )}
             </Formik>
+            <Snackbar
+                visible={visibleSnackbar}
+                onDismiss={() => setVisibleSnackbar(false)}
+                duration={Snackbar.DURATION_SHORT}
+            >
+                {error}
+            </Snackbar>
         </View>
     );
 };

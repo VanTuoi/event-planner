@@ -29,7 +29,7 @@ export const LoginScreen: React.FC = memo(() => {
 
     return (
         <Formik
-            initialValues={{ email: "test@example.com", password: "123456" }}
+            initialValues={{ email: "admin@gmail.com", password: "123456" }}
             validationSchema={LoginSchema}
             onSubmit={async (values) => {
                 await handleLogin(values.email, values.password);

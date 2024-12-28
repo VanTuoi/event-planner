@@ -1,23 +1,30 @@
-import { RouteProp, useRoute } from "@react-navigation/native";
+import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import React, { memo, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, Dialog, Portal, useTheme } from "react-native-paper";
+
+import { useDeleteEvent } from "~/hook/event-config";
+import { useEventStore } from "~/store";
 import { EventCreate } from "~/types/event";
 import { RootStackParamList } from "~/types/route";
 import { UpdateEvent } from "./update";
 
 export const EventSettingScreen = memo(() => {
     const { colors } = useTheme();
+    const { events } = useEventStore();
     const route = useRoute<RouteProp<RootStackParamList, "event-detail">>();
+    const navigation: NavigationProp<RootStackParamList> = useNavigation();
 
     const [event, setEvent] = useState(route.params?.event);
     const [visible, setVisible] = useState(false);
 
+    const { handleDeleteEvent, isLoading } = useDeleteEvent();
+
     useEffect(() => {
         if (route.params?.event) {
-            setEvent(route.params.event);
+            setEvent(events.find((item) => item.id === route.params?.event.id));
         }
-    }, [route.params?.event]);
+    }, [events, route]);
 
     const handleUpdate = (newEvent: EventCreate) => {
         console.log("newEvent", newEvent);
@@ -27,9 +34,14 @@ export const EventSettingScreen = memo(() => {
         setVisible(true);
     };
 
-    const handleConfirmDelete = () => {
-        console.log("Event deleted");
-        setVisible(false);
+    const handleConfirmDelete = async () => {
+        if (event?.id) {
+            const status = await handleDeleteEvent(event.id);
+            if (status.statusCode === 200) {
+                setVisible(false);
+                navigation.navigate("home");
+            }
+        }
     };
 
     const handleCancelDelete = () => {
@@ -56,7 +68,13 @@ export const EventSettingScreen = memo(() => {
                         <Button style={styles.button} mode="outlined" onPress={handleCancelDelete}>
                             Cancel
                         </Button>
-                        <Button mode="contained" style={styles.button} onPress={handleConfirmDelete}>
+                        <Button
+                            mode="contained"
+                            style={styles.button}
+                            onPress={handleConfirmDelete}
+                            loading={isLoading}
+                            disabled={isLoading}
+                        >
                             Confirm
                         </Button>
                     </Dialog.Actions>

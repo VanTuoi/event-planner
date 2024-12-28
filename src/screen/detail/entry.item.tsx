@@ -1,33 +1,43 @@
 import React, { memo, useState } from "react";
 import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from "react-native";
 import { Button, useTheme } from "react-native-paper";
-import { DoorKeeper, Entry } from "~/types/event";
+import {
+    useChangeStatusEntryEvent,
+    useDeleteEntryEvent,
+    useDeleteKeeperEvent,
+    useUpdateKeeperEvent
+} from "~/hook/event-config";
+import { Entry } from "~/types/event";
 import { EntryModal } from "./entry.modal";
 
 interface EntryComponentProps {
+    eventId: string;
     entries: Entry;
     marginStyle?: ViewStyle;
 }
 
-export const EntryComponent = memo(({ entries, marginStyle }: EntryComponentProps) => {
+export const EntryComponent = memo(({ eventId, entries, marginStyle }: EntryComponentProps) => {
     const { colors } = useTheme();
     const [modalVisible, setModalVisible] = useState(false);
-    const [doorKeepers, setDoorKeepers] = useState<DoorKeeper[]>(entries.doorKeepers || []);
+    const { error: errorUpdate, isLoading: isLoadingUpdate, handleUpdateKeeperEvent } = useUpdateKeeperEvent();
+    const { error: errorDelete, isLoading: isLoadingDelete, handleDeleteKeeperEvent } = useDeleteKeeperEvent();
+    const { error: errorDeleteEntry, isLoading: isLoadingDeleteEntry, handleDeleteEntryEvent } = useDeleteEntryEvent();
+    const { isLoading: isLoadingChangeStatusEntry, handleChangeStatusEntryEvent } = useChangeStatusEntryEvent();
 
-    const handleChangeStatus = (status: string) => {
-        console.log("status", status);
+    const handleChangeStatus = async (status: "open" | "close") => {
+        await handleChangeStatusEntryEvent(entries.id, status);
     };
 
-    const handleDeleteEntry = () => {
-        console.log("entries id", entries?.id);
+    const handleDeleteEntry = async () => {
+        await handleDeleteEntryEvent(entries.id);
     };
 
-    const handleAddKeeper = (keeper: DoorKeeper) => {
-        setDoorKeepers((prev) => [...prev, keeper]);
+    const handleAddKeeper = async (id: string, email: string) => {
+        await handleUpdateKeeperEvent(eventId, id, email);
     };
 
-    const handleRemoveKeeper = (keeperId: string) => {
-        setDoorKeepers((prev) => prev.filter((keeper) => keeper.id !== keeperId));
+    const handleRemoveKeeper = async (keeperId: string) => {
+        await handleDeleteKeeperEvent(keeperId, entries?.id);
     };
 
     return (
@@ -54,13 +64,15 @@ export const EntryComponent = memo(({ entries, marginStyle }: EntryComponentProp
                         </View>
                         <View style={[styles.footer]}>
                             <Button
+                                loading={isLoadingChangeStatusEntry}
+                                disabled={isLoadingChangeStatusEntry}
                                 style={[
                                     styles.button,
                                     { backgroundColor: entries?.status === "open" ? "#40AA71" : "#CE5454" }
                                 ]}
                                 labelStyle={[styles.button]}
                                 uppercase
-                                onPress={() => handleChangeStatus(entries?.status === "open" ? "closed" : "open")}
+                                onPress={() => handleChangeStatus(entries?.status === "open" ? "close" : "open")}
                                 mode="text"
                             >
                                 {entries?.status === "open" ? "Opened" : "Closed"}
@@ -76,12 +88,16 @@ export const EntryComponent = memo(({ entries, marginStyle }: EntryComponentProp
                 </View>
             </TouchableWithoutFeedback>
             <EntryModal
+                error={errorUpdate || errorDelete || errorDeleteEntry}
+                isLoadingUpdate={isLoadingUpdate}
+                isLoadingDelete={isLoadingDelete}
+                isLoadingDeleteEntry={isLoadingDeleteEntry}
                 visible={modalVisible}
                 onClose={() => setModalVisible(false)}
                 handleDeleteEntry={handleDeleteEntry}
                 onAddKeeper={handleAddKeeper}
                 onRemoveKeeper={handleRemoveKeeper}
-                doorKeepers={doorKeepers}
+                doorKeepers={entries.doorKeepers}
             />
         </>
     );
@@ -151,11 +167,11 @@ const styles = StyleSheet.create({
     },
     button: {
         color: "#fff",
+        textAlign: "center",
         alignItems: "center",
         justifyContent: "center",
-        paddingHorizontal: 4,
+        paddingHorizontal: 10,
         height: 30,
-        width: 132,
         paddingVertical: 3,
         fontSize: 11
     }
