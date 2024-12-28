@@ -1,16 +1,24 @@
 import { RouteProp, useRoute } from "@react-navigation/native";
-import React, { memo } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { useTheme } from "react-native-paper";
+import { useEventStore } from "~/store";
 import { RootStackParamList } from "~/types/route";
 import { EntryComponent } from "./entry.item";
 import { Statistic } from "./statistic";
 
 export const KeeperDetailScreen = memo(() => {
     const { colors } = useTheme();
+    const { events } = useEventStore();
     const route = useRoute<RouteProp<RootStackParamList, "event-detail">>();
 
-    const event = route.params?.event;
+    const [event, setEvent] = useState(route.params?.event);
+
+    useEffect(() => {
+        if (route.params?.event) {
+            setEvent(events.find((item) => item.id === route.params?.event.id));
+        }
+    }, [events, route]);
 
     return (
         <View style={[styles.container, { backgroundColor: colors.background }]}>

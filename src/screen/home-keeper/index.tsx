@@ -2,15 +2,18 @@ import React, { memo } from "react";
 import { FlatList, Image, RefreshControl, StyleSheet, Text, View } from "react-native";
 import { useTheme } from "react-native-paper";
 import homeImage from "~/assets/images/home.png";
-import { useEvent } from "~/hook/home/event";
+import { useEventKeeper } from "~/hook/home-keeper";
+import { useSocket } from "~/hook/socket";
 import { EventComponent } from "./event.item";
 
 export const KeeperHomeScreen = memo(() => {
     const { colors } = useTheme();
-    const { events, isLoading, handleGetEvent } = useEvent();
+    const { events, isLoading, handleGetEventKeeper } = useEventKeeper();
+
+    useSocket();
 
     const onRefresh = () => {
-        handleGetEvent();
+        handleGetEventKeeper();
     };
 
     const renderEmptyList = () => (

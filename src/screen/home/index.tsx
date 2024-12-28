@@ -2,7 +2,7 @@ import React, { memo, useState } from "react";
 import { FlatList, Image, RefreshControl, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Button, useTheme } from "react-native-paper";
 import homeImage from "~/assets/images/home.png";
-import { useEvent } from "~/hook/home/event";
+import { useEvent } from "~/hook/home";
 import { useSocket } from "~/hook/socket";
 import { useEventStore } from "~/store";
 import { CreateEvent } from "./create";
