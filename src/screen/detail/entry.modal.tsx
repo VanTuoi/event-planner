@@ -1,20 +1,37 @@
-import React, { memo, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { Button, IconButton, Modal, Portal, TextInput, useTheme } from "react-native-paper";
+import { Button, IconButton, Modal, Portal, Snackbar, TextInput, useTheme } from "react-native-paper";
 import { DoorKeeper } from "~/types/event";
+import { truncateText } from "~/utils";
 
 interface EntryModalProps {
+    error: string | null;
     visible: boolean;
+    isLoadingUpdate: boolean;
+    isLoadingDelete: boolean;
+    isLoadingDeleteEntry: boolean;
     onClose: () => void;
-    onAddKeeper: (keeper: DoorKeeper) => void;
+    onAddKeeper: (id: string, email: string) => void;
     onRemoveKeeper: (keeperId: string) => void;
     handleDeleteEntry: () => void;
     doorKeepers: DoorKeeper[];
 }
 
 export const EntryModal = memo(
-    ({ visible, onClose, onAddKeeper, onRemoveKeeper, doorKeepers, handleDeleteEntry }: EntryModalProps) => {
+    ({
+        error,
+        visible,
+        isLoadingUpdate,
+        isLoadingDelete,
+        isLoadingDeleteEntry,
+        onClose,
+        onAddKeeper,
+        onRemoveKeeper,
+        doorKeepers,
+        handleDeleteEntry
+    }: EntryModalProps) => {
         const { colors } = useTheme();
+        const [visibleSnackbar, setVisibleSnackbar] = useState(false);
         const [keeperId, setKeeperId] = useState("");
         const [keeperEmail, setKeeperEmail] = useState("");
 
@@ -23,16 +40,16 @@ export const EntryModal = memo(
                 return;
             }
 
-            const newKeeper: DoorKeeper = {
-                id: keeperId || `auto-${Date.now()}`,
-                name: `Keeper ${doorKeepers.length + 1}`,
-                email: keeperEmail
-            };
-
-            onAddKeeper(newKeeper);
+            onAddKeeper(keeperId, keeperEmail);
             setKeeperId("");
             setKeeperEmail("");
         };
+
+        useEffect(() => {
+            if (error) {
+                setVisibleSnackbar(true);
+            }
+        }, [error]);
 
         return (
             <Portal>
@@ -63,6 +80,8 @@ export const EntryModal = memo(
                             onChangeText={setKeeperEmail}
                         />
                         <Button
+                            loading={isLoadingUpdate}
+                            disabled={isLoadingUpdate}
                             mode="contained"
                             style={styles.button}
                             labelStyle={[styles.buttonLabel]}
@@ -76,11 +95,13 @@ export const EntryModal = memo(
                         <View key={keeper.id} style={[styles.keeperRow, { borderColor: colors.primaryContainer }]}>
                             <View style={[styles.keeperRowTitle]}>
                                 <Text style={[styles.keeperRowName, { color: colors.primaryContainer }]}>
-                                    {keeper.name} ({keeper.id})
+                                    {truncateText(keeper.name, 20)} ({truncateText(keeper.id, 10)})
                                 </Text>
-                                <Text style={[styles.keeperRowEmail]}>{keeper.email}</Text>
+                                <Text style={[styles.keeperRowEmail]}>{truncateText(keeper.email, 25)}</Text>
                             </View>
                             <IconButton
+                                loading={isLoadingDelete}
+                                disabled={isLoadingDelete}
                                 icon="trash-can-outline"
                                 onPress={() => onRemoveKeeper(keeper.id)}
                                 style={[styles.iconButton, { marginLeft: 16 }]}
@@ -91,6 +112,8 @@ export const EntryModal = memo(
                     {doorKeepers.length === 0 ? <Text style={styles.subTitleNoGateKeeper}> No keeper yet</Text> : null}
                     <Button
                         mode="outlined"
+                        loading={isLoadingDeleteEntry}
+                        disabled={isLoadingDeleteEntry}
                         style={[styles.buttonDelete, { borderColor: colors.error }]}
                         labelStyle={[styles.buttonDeleteLabel, { color: colors.error }]}
                         onPress={handleDeleteEntry}
@@ -98,6 +121,13 @@ export const EntryModal = memo(
                         Delete entry
                     </Button>
                 </Modal>
+                <Snackbar
+                    visible={visibleSnackbar}
+                    onDismiss={() => setVisibleSnackbar(false)}
+                    duration={Snackbar.DURATION_SHORT}
+                >
+                    {error}
+                </Snackbar>
             </Portal>
         );
     }

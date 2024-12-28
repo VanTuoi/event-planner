@@ -7,10 +7,10 @@ import { EventComponent } from "./event.item";
 
 export const KeeperHomeScreen = memo(() => {
     const { colors } = useTheme();
-    const { events, isLoading, fetchEvents } = useEvent();
+    const { events, isLoading, handleGetEvent } = useEvent();
 
     const onRefresh = () => {
-        fetchEvents();
+        handleGetEvent();
     };
 
     const renderEmptyList = () => (

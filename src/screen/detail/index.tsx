@@ -1,16 +1,24 @@
 import { RouteProp, useRoute } from "@react-navigation/native";
-import React, { memo } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { useTheme } from "react-native-paper";
+import { useEventStore } from "~/store";
 import { RootStackParamList } from "~/types/route";
 import { EntryComponent } from "./entry.item";
 import { Statistic } from "./statistic";
 
 export const DetailScreen = memo(() => {
     const { colors } = useTheme();
+    const { events } = useEventStore();
     const route = useRoute<RouteProp<RootStackParamList, "event-detail">>();
 
-    const event = route.params?.event;
+    const [event, setEvent] = useState(route.params?.event);
+
+    useEffect(() => {
+        if (route.params?.event) {
+            setEvent(events.find((item) => item.id === route.params?.event.id));
+        }
+    }, [events, route]);
 
     return (
         <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -19,20 +27,24 @@ export const DetailScreen = memo(() => {
                 {event ? <Statistic event={event} /> : <Text>No event data available</Text>}
                 <Text style={styles.titleHaveEvent}>ENTRIES</Text>
                 {!event && <Text>No entries data available</Text>}
-                <FlatList
-                    contentContainerStyle={{ flexGrow: 1 }}
-                    style={styles.list}
-                    showsVerticalScrollIndicator={false}
-                    data={event?.entries}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={({ item, index }) => (
-                        <EntryComponent
-                            entries={item}
-                            marginStyle={index % 2 === 0 ? { marginRight: 8 } : { marginLeft: 8 }}
-                        />
-                    )}
-                    numColumns={2}
-                />
+                {event && (
+                    <FlatList
+                        contentContainerStyle={{ flexGrow: 1 }}
+                        style={styles.list}
+                        showsVerticalScrollIndicator={false}
+                        data={event?.entries}
+                        extraData={event}
+                        keyExtractor={(item) => item.id.toString()}
+                        renderItem={({ item, index }) => (
+                            <EntryComponent
+                                eventId={event?.id}
+                                entries={item}
+                                marginStyle={index % 2 === 0 ? { marginRight: 8 } : { marginLeft: 8 }}
+                            />
+                        )}
+                        numColumns={2}
+                    />
+                )}
             </View>
         </View>
     );

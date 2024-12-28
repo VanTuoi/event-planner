@@ -1,9 +1,10 @@
 import { Formik } from "formik";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { Button, Dialog, Portal, useTheme } from "react-native-paper";
+import { Button, Dialog, Portal, Snackbar, useTheme } from "react-native-paper";
 import * as Yup from "yup";
 import { InputText, NumberInput } from "~/components/inputs";
+import { useCreateEvent } from "~/hook/home";
 import { EventCreate } from "~/types/event";
 
 const EventSchema = Yup.object().shape({
@@ -24,24 +25,37 @@ const EventSchema = Yup.object().shape({
 interface CreateEventProps {
     modalVisible: boolean;
     setModalVisible: (status: boolean) => void;
-    onCreateEvent: (event: EventCreate) => void;
 }
 
-const CreateEventComponent: React.FC<CreateEventProps> = ({ modalVisible, setModalVisible, onCreateEvent }) => {
+const CreateEventComponent: React.FC<CreateEventProps> = ({ modalVisible, setModalVisible }) => {
     const { colors } = useTheme();
 
-    const handleSubmit = (values: EventCreate) => {
-        onCreateEvent(values);
-        setModalVisible(false);
+    const { handleCreateEvent, isLoading, error } = useCreateEvent();
+
+    const [visibleSnackbar, setVisibleSnackbar] = useState(false);
+
+    useEffect(() => {
+        if (error) {
+            setVisibleSnackbar(true);
+        }
+    }, [error]);
+
+    const handleSubmit = async (values: EventCreate) => {
+        const status = await handleCreateEvent(
+            values.titleEvent,
+            values.venue,
+            values.maxParticipants,
+            values.alertPoint,
+            values.numberOfEntries
+        );
+        if (status.statusCode === 200) {
+            setModalVisible(false);
+        }
     };
 
     return (
         <Portal>
-            <Dialog
-                visible={modalVisible}
-                onDismiss={() => setModalVisible(false)}
-                style={[styles.dialog, { backgroundColor: colors.background }]}
-            >
+            <Dialog visible={modalVisible} style={[styles.dialog, { backgroundColor: colors.background }]}>
                 <Dialog.Content style={[styles.dialogContent]}>
                     <View style={[styles.modalContainer, { backgroundColor: colors.background }]}>
                         <Formik
@@ -120,6 +134,8 @@ const CreateEventComponent: React.FC<CreateEventProps> = ({ modalVisible, setMod
                                         </Button>
 
                                         <Button
+                                            loading={isLoading}
+                                            disabled={isLoading}
                                             mode="contained"
                                             style={styles.button}
                                             onPress={() => formikHandleSubmit()}
@@ -133,6 +149,13 @@ const CreateEventComponent: React.FC<CreateEventProps> = ({ modalVisible, setMod
                     </View>
                 </Dialog.Content>
             </Dialog>
+            <Snackbar
+                visible={visibleSnackbar}
+                onDismiss={() => setVisibleSnackbar(false)}
+                duration={Snackbar.DURATION_SHORT}
+            >
+                {error}
+            </Snackbar>
         </Portal>
     );
 };

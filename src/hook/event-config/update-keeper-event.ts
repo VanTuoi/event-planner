@@ -1,32 +1,37 @@
 import axios, { AxiosError } from "axios";
-import { useCallback, useEffect, useState } from "react";
-import { useEventStore } from "~/store";
+import { useState } from "react";
 import { ApiResponse } from "~/types/api-response";
 import { Event } from "~/types/event";
 
-export interface SuccessData {
-    events: Event[];
+interface SuccessData {
+    event: Event;
 }
 
-export interface ErrorData {
+interface ErrorData {
     message: string;
 }
 
-export const useEvent = () => {
+export const useUpdateKeeperEvent = () => {
     const [isLoading, setIsLoading] = useState(false);
-    const [events, setEvents] = useState<Event[] | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const { initEvents } = useEventStore();
 
-    const handleGetEvent = useCallback(async (): Promise<ApiResponse<SuccessData | ErrorData>> => {
+    const handleUpdateKeeperEvent = async (
+        idEntry: string,
+        idKeeper: string,
+        email: string
+    ): Promise<ApiResponse<SuccessData | ErrorData>> => {
         setIsLoading(true);
         setError(null);
 
         try {
-            const response = await axios.get<ApiResponse<SuccessData>>(`${process.env.EXPO_PUBLIC_API_URL}/events/all`);
-            if (response.data.statusCode === 200 && Array.isArray(response.data.data.events)) {
-                setEvents(response.data.data.events);
-                initEvents(response.data.data.events);
+            const response = await axios.put<ApiResponse<SuccessData>>(
+                `${process.env.EXPO_PUBLIC_API_URL}/events/keeper/update/${idEntry}`,
+                {
+                    idKeeper,
+                    email
+                }
+            );
+            if (response.data.statusCode === 200 && Array.isArray(response.data.data.event)) {
                 return {
                     statusCode: response.data.statusCode,
                     statusText: response.data.statusText,
@@ -47,7 +52,7 @@ export const useEvent = () => {
                     data: { message: errorMessage }
                 };
             }
-            console.error("Unexpected error", err);
+            console.error("Unexpected error useUpdateKeeperEvent", err);
             setError("An unexpected error occurred. Please try again.");
             return {
                 statusCode: 500,
@@ -57,11 +62,7 @@ export const useEvent = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [initEvents]);
+    };
 
-    useEffect(() => {
-        handleGetEvent();
-    }, [handleGetEvent]);
-
-    return { handleGetEvent, events, isLoading, error };
+    return { handleUpdateKeeperEvent, isLoading, error };
 };

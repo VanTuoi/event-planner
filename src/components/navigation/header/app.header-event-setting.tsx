@@ -3,21 +3,22 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import React, { memo, useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useTheme } from "react-native-paper";
+import { useEventStore } from "~/store";
 import { RootStackParamList } from "~/types/route";
 
 export const AppHeaderSetting = memo(() => {
     const { colors, fonts } = useTheme();
+    const { events } = useEventStore();
     const navigation = useNavigation();
-
     const route = useRoute<RouteProp<RootStackParamList, "event-detail">>();
 
     const [event, setEvent] = useState(route.params?.event);
 
     useEffect(() => {
         if (route.params?.event) {
-            setEvent(route.params.event);
+            setEvent(events.find((item) => item.id === route.params?.event.id));
         }
-    }, [route.params?.event]);
+    }, [events, route]);
 
     const handleBackPress = () => {
         navigation.goBack();

@@ -1,31 +1,33 @@
 import React, { memo, useState } from "react";
-import { FlatList, Image, RefreshControl, StyleSheet, Text, View } from "react-native";
+import { FlatList, Image, RefreshControl, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Button, useTheme } from "react-native-paper";
 import homeImage from "~/assets/images/home.png";
 import { useEvent } from "~/hook/home/event";
-import { EventCreate } from "~/types/event";
+import { useSocket } from "~/hook/socket";
+import { useEventStore } from "~/store";
 import { CreateEvent } from "./create";
 import { EventComponent } from "./event.item";
 
 export const HomeScreen = memo(() => {
     const { colors } = useTheme();
-    const { events, isLoading, fetchEvents } = useEvent();
-
+    const { isLoading, handleGetEvent } = useEvent();
+    const { events } = useEventStore();
     const [modalVisible, setModalVisible] = useState(false);
 
-    const onCreateEvent = (newEvent: EventCreate) => {
-        console.log("newEvent", newEvent);
-    };
+    useSocket();
 
     const onRefresh = () => {
-        fetchEvents();
+        handleGetEvent();
     };
 
     const renderEmptyList = () => (
-        <>
+        <ScrollView
+            contentContainerStyle={styles.emptyContainer}
+            refreshControl={<RefreshControl refreshing={isLoading} onRefresh={onRefresh} colors={[colors.primary]} />}
+        >
             <Image source={homeImage} style={styles.image} />
-            <Text style={styles.title}>{isLoading ? "Loading..." : "Events"}</Text>
-        </>
+            <Text style={styles.title}>{isLoading ? "Loading..." : "No events yet"}</Text>
+        </ScrollView>
     );
 
     const renderList = () => (
@@ -35,7 +37,7 @@ export const HomeScreen = memo(() => {
                 style={styles.list}
                 showsVerticalScrollIndicator={false}
                 data={events}
-                keyExtractor={(item) => item.id.toString()}
+                keyExtractor={(item) => item.id}
                 renderItem={({ item }) => <EventComponent event={item} />}
                 refreshControl={
                     <RefreshControl refreshing={isLoading} onRefresh={onRefresh} colors={[colors.primary]} />
@@ -52,11 +54,7 @@ export const HomeScreen = memo(() => {
                     Create new event
                 </Button>
             </View>
-            <CreateEvent
-                modalVisible={modalVisible}
-                setModalVisible={(status) => setModalVisible(status)}
-                onCreateEvent={onCreateEvent}
-            />
+            <CreateEvent modalVisible={modalVisible} setModalVisible={(status) => setModalVisible(status)} />
         </View>
     );
 });
@@ -64,6 +62,11 @@ export const HomeScreen = memo(() => {
 const styles = StyleSheet.create({
     container: {
         flex: 1
+    },
+    emptyContainer: {
+        flexGrow: 1,
+        justifyContent: "center",
+        alignItems: "center"
     },
     mainContent: {
         flex: 1,
