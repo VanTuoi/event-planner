@@ -1,13 +1,15 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import React, { memo } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, useTheme } from "react-native-paper";
 import { Event } from "~/types/event";
 import { RootStackParamList } from "~/types/route";
 
 export const EventComponent = memo(({ event }: { event: Event }) => {
-    const navigation: NavigationProp<RootStackParamList> = useNavigation();
+    const { t } = useTranslation();
     const { colors } = useTheme();
+    const navigation: NavigationProp<RootStackParamList> = useNavigation();
 
     const totalGuests = event.entries.reduce((total, entry) => total + entry.totalIn, 0);
 
@@ -17,18 +19,22 @@ export const EventComponent = memo(({ event }: { event: Event }) => {
                 <Text style={[styles.title]}>{event.titleEvent}</Text>
                 <View style={[styles.body]}>
                     <View style={[styles.bodyItem]}>
-                        <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>entries</Text>
+                        <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>
+                            {t("home.entries")}
+                        </Text>
                         <Text style={[styles.bodyItemContain, { color: colors.primary }]}>{event?.entries.length}</Text>
                     </View>
                     <View style={[styles.bodyItem]}>
-                        <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>Max participants</Text>
+                        <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>
+                            {t("home.maxParticipants")}
+                        </Text>
                         <Text style={[styles.bodyItemContain, { color: colors.primary }]}>
                             {event?.maxParticipants}
                         </Text>
                     </View>
                     <View style={[styles.bodyItem]}>
                         <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>
-                            Total participants
+                            {t("home.totalParticipants")}
                         </Text>
                         <Text style={[styles.bodyItemContain, { color: colors.primary }]}>{totalGuests}</Text>
                     </View>
@@ -63,7 +69,7 @@ export const EventComponent = memo(({ event }: { event: Event }) => {
                         mode="outlined"
                         onPress={() => navigation.navigate("event-detail", { event })}
                     >
-                        see more
+                        {t("home.seeMore")}
                     </Button>
                 </View>
             </View>

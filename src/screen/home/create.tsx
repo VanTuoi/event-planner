@@ -1,5 +1,6 @@
 import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Button, Dialog, Portal, Snackbar, useTheme } from "react-native-paper";
 import * as Yup from "yup";
@@ -28,6 +29,7 @@ interface CreateEventProps {
 }
 
 const CreateEventComponent: React.FC<CreateEventProps> = ({ modalVisible, setModalVisible }) => {
+    const { t } = useTranslation();
     const { colors } = useTheme();
 
     const { handleCreateEvent, isLoading, error } = useCreateEvent();
@@ -78,10 +80,10 @@ const CreateEventComponent: React.FC<CreateEventProps> = ({ modalVisible, setMod
                                 touched
                             }) => (
                                 <ScrollView style={styles.formContainer}>
-                                    <Text style={styles.title}>Create New Event</Text>
+                                    <Text style={styles.title}>{t("home.createNewEvent")}</Text>
                                     <InputText
                                         backgroundColor={colors.secondaryContainer}
-                                        label="Event Title"
+                                        label={t("home.createEvent.eventTitle")}
                                         value={values.titleEvent}
                                         onChangeText={handleChange("titleEvent")}
                                         onBlur={handleBlur("titleEvent")}
@@ -90,7 +92,7 @@ const CreateEventComponent: React.FC<CreateEventProps> = ({ modalVisible, setMod
 
                                     <InputText
                                         backgroundColor={colors.secondaryContainer}
-                                        label="Venue"
+                                        label={t("home.createEvent.venue")}
                                         value={values.venue}
                                         onChangeText={handleChange("venue")}
                                         onBlur={handleBlur("venue")}
@@ -99,7 +101,7 @@ const CreateEventComponent: React.FC<CreateEventProps> = ({ modalVisible, setMod
 
                                     <NumberInput
                                         backgroundColor={colors.secondaryContainer}
-                                        label="Max Participants"
+                                        label={t("home.createEvent.maxParticipants")}
                                         value={values.maxParticipants}
                                         onChangeText={handleChange("maxParticipants")}
                                         onBlur={handleBlur("maxParticipants")}
@@ -108,7 +110,7 @@ const CreateEventComponent: React.FC<CreateEventProps> = ({ modalVisible, setMod
 
                                     <NumberInput
                                         backgroundColor={colors.secondaryContainer}
-                                        label="Alert Point"
+                                        label={t("home.createEvent.alertPoint")}
                                         value={values.alertPoint}
                                         onChangeText={handleChange("alertPoint")}
                                         onBlur={handleBlur("alertPoint")}
@@ -117,7 +119,7 @@ const CreateEventComponent: React.FC<CreateEventProps> = ({ modalVisible, setMod
 
                                     <NumberInput
                                         backgroundColor={colors.secondaryContainer}
-                                        label="Number of Entries"
+                                        label={t("home.createEvent.numberOfEntries")}
                                         value={values.numberOfEntries}
                                         onChangeText={handleChange("numberOfEntries")}
                                         onBlur={handleBlur("numberOfEntries")}
@@ -130,7 +132,7 @@ const CreateEventComponent: React.FC<CreateEventProps> = ({ modalVisible, setMod
                                             style={styles.button}
                                             onPress={() => setModalVisible(false)}
                                         >
-                                            Cancel
+                                            {t("home.createEvent.cancel")}
                                         </Button>
 
                                         <Button
@@ -140,7 +142,7 @@ const CreateEventComponent: React.FC<CreateEventProps> = ({ modalVisible, setMod
                                             style={styles.button}
                                             onPress={() => formikHandleSubmit()}
                                         >
-                                            Create
+                                            {t("home.createEvent.create")}
                                         </Button>
                                     </View>
                                 </ScrollView>

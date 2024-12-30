@@ -1,5 +1,6 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import React, { memo, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from "react-native";
 import { Button, useTheme } from "react-native-paper";
 import { useAuthStore } from "~/store";
@@ -13,6 +14,7 @@ interface EntryComponentProps {
 }
 
 export const EntryComponent = memo(({ entries, event, marginStyle }: EntryComponentProps) => {
+    const { t } = useTranslation();
     const { colors } = useTheme();
     const navigation: NavigationProp<RootStackParamList> = useNavigation();
     const { user } = useAuthStore();
@@ -37,11 +39,15 @@ export const EntryComponent = memo(({ entries, event, marginStyle }: EntryCompon
                     <Text style={[styles.title]}>{entries?.name}</Text>
                     <View style={[styles.body]}>
                         <View style={[styles.bodyItem]}>
-                            <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>total in</Text>
+                            <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>
+                                {t("keeperDetail.totalIn")}
+                            </Text>
                             <Text style={[styles.bodyItemContain, { color: colors.primary }]}>{entries.totalIn}</Text>
                         </View>
                         <View style={[styles.bodyItem]}>
-                            <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>total out</Text>
+                            <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>
+                                {t("keeperDetail.totalOut")}
+                            </Text>
                             <Text style={[styles.bodyItemContain, { color: colors.primary }]}>{entries.totalOut}</Text>
                         </View>
                     </View>
@@ -56,7 +62,9 @@ export const EntryComponent = memo(({ entries, event, marginStyle }: EntryCompon
                             disabled={!haveAuthority}
                             mode="text"
                         >
-                            {entries?.status === "open" ? "Opened" : "Closed"}
+                            {entries?.status === "open"
+                                ? t("keeperDetail.status.open")
+                                : t("keeperDetail.status.close")}
                         </Button>
                         <View
                             style={[
@@ -68,7 +76,7 @@ export const EntryComponent = memo(({ entries, event, marginStyle }: EntryCompon
                 </View>
                 {!haveAuthority && (
                     <View style={styles.overlay}>
-                        <Text style={styles.overlayText}>No Access</Text>
+                        <Text style={styles.overlayText}>{t("keeperDetail.noAccess")}</Text>
                     </View>
                 )}
             </View>

@@ -1,10 +1,12 @@
 import React, { memo, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
 import { useTheme } from "react-native-paper";
 import CustomProgressBar from "~/components/process-bar";
 import { Event } from "~/types/event";
 
 export const Statistic = memo(({ event }: { event: Event }) => {
+    const { t } = useTranslation();
     const { colors } = useTheme();
 
     const totalGuestsIn = useMemo(
@@ -35,7 +37,7 @@ export const Statistic = memo(({ event }: { event: Event }) => {
                 {event ? (
                     <>
                         <View style={[styles.process]}>
-                            <Text style={[styles.processTitle]}>Current in</Text>
+                            <Text style={[styles.processTitle]}>{t("keeperCheck.currentIn")}</Text>
                             <Text style={[styles.processContain, { color: colors.primary }]}>
                                 {currentGuests}/{event.maxParticipants}
                             </Text>
@@ -43,12 +45,14 @@ export const Statistic = memo(({ event }: { event: Event }) => {
                         <CustomProgressBar progress={currentGuests / event.maxParticipants} color="#DDC523" />
                         <View style={[styles.body]}>
                             <View style={[styles.bodyItem]}>
-                                <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>Total in</Text>
+                                <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>
+                                    {t("keeperCheck.totalIn")}
+                                </Text>
                                 <Text style={[styles.bodyItemContain, { color: colors.primary }]}>{totalGuestsIn}</Text>
                             </View>
                             <View style={[styles.bodyItem]}>
                                 <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>
-                                    Total out
+                                    {t("keeperCheck.totalOut")}
                                 </Text>
                                 <Text style={[styles.bodyItemContain, { color: colors.primary }]}>
                                     {totalGuestsOut}
@@ -56,7 +60,7 @@ export const Statistic = memo(({ event }: { event: Event }) => {
                             </View>
                             <View style={[styles.bodyItem]}>
                                 <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>
-                                    opened entries
+                                    {t("keeperCheck.openedEntries")}
                                 </Text>
                                 <Text style={[styles.bodyItemContain, { color: colors.primary }]}>
                                     {totalOpenEntries}
@@ -64,7 +68,7 @@ export const Statistic = memo(({ event }: { event: Event }) => {
                             </View>
                             <View style={[styles.bodyItem]}>
                                 <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>
-                                    close entries
+                                    {t("keeperCheck.closedEntries")}
                                 </Text>
                                 <Text style={[styles.bodyItemContain, { color: colors.primary }]}>
                                     {totalCloseEntries}
@@ -73,7 +77,7 @@ export const Statistic = memo(({ event }: { event: Event }) => {
                         </View>
                     </>
                 ) : (
-                    <Text>No event data available</Text>
+                    <Text>{t("keeperCheck.closedEntries")}</Text>
                 )}
             </View>
         </View>

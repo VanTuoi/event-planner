@@ -1,11 +1,13 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import React, { memo, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useTheme } from "react-native-paper";
 import { RootStackParamList } from "~/types/route";
 
 export const KeeperAppHeaderCheck = memo(() => {
+    const { t } = useTranslation();
     const { colors, fonts } = useTheme();
     const navigation = useNavigation();
 
@@ -37,7 +39,7 @@ export const KeeperAppHeaderCheck = memo(() => {
                         }
                     ]}
                 >
-                    {entry?.name ?? "Entry"}
+                    {entry?.name ?? t("nav.entry")}
                 </Text>
                 <TouchableOpacity onPress={handleBackPress}>
                     <MaterialIcons name="close" size={28} color={colors.background} />

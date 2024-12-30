@@ -1,15 +1,15 @@
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import React, { memo, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, Dialog, Portal, useTheme } from "react-native-paper";
-
 import { useDeleteEvent } from "~/hook/event-config";
 import { useEventStore } from "~/store";
-import { EventCreate } from "~/types/event";
 import { RootStackParamList } from "~/types/route";
 import { UpdateEvent } from "./update";
 
 export const EventSettingScreen = memo(() => {
+    const { t } = useTranslation();
     const { colors } = useTheme();
     const { events } = useEventStore();
     const route = useRoute<RouteProp<RootStackParamList, "event-detail">>();
@@ -25,10 +25,6 @@ export const EventSettingScreen = memo(() => {
             setEvent(events.find((item) => item.id === route.params?.event.id));
         }
     }, [events, route]);
-
-    const handleUpdate = (newEvent: EventCreate) => {
-        console.log("newEvent", newEvent);
-    };
 
     const handleDelete = () => {
         setVisible(true);
@@ -53,20 +49,19 @@ export const EventSettingScreen = memo(() => {
     return (
         <View style={[styles.container, { backgroundColor: colors.background }]}>
             <View style={styles.mainContent}>
-                <Text style={styles.title}>EVENT SETTINGS</Text>
+                <Text style={styles.title}>{t("detail.setting.title")}</Text>
                 <UpdateEvent
                     initialValuesToProps={event}
-                    onSave={() => handleUpdate}
                     onDelete={handleDelete}
                     onDownloadStatistics={handleDownloadStatistics}
                 />
             </View>
             <Portal>
                 <Dialog visible={visible} onDismiss={handleCancelDelete} style={styles.dialog}>
-                    <Dialog.Title style={styles.dialogTitle}>Confirm event deletion</Dialog.Title>
+                    <Dialog.Title style={styles.dialogTitle}>{t("detail.setting.confirmEventDeletion")}</Dialog.Title>
                     <Dialog.Actions style={styles.dialogActions}>
                         <Button style={styles.button} mode="outlined" onPress={handleCancelDelete}>
-                            Cancel
+                            {t("detail.setting.cancel")}
                         </Button>
                         <Button
                             mode="contained"
@@ -75,7 +70,7 @@ export const EventSettingScreen = memo(() => {
                             loading={isLoading}
                             disabled={isLoading}
                         >
-                            Confirm
+                            {t("detail.setting.confirm")}
                         </Button>
                     </Dialog.Actions>
                 </Dialog>

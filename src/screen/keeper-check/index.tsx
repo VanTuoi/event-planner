@@ -1,5 +1,6 @@
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import React, { memo, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, useTheme } from "react-native-paper";
 import { useCheckDecrement, useCheckIncrement } from "~/hook/home-keeper";
@@ -10,6 +11,7 @@ import { EntryComponent } from "./entry.item";
 import { Statistic } from "./statistic";
 
 export const KeeperCheckScreen = memo(() => {
+    const { t } = useTranslation();
     const { colors } = useTheme();
     const { user } = useAuthStore();
     const { events } = useEventStore();
@@ -51,10 +53,10 @@ export const KeeperCheckScreen = memo(() => {
     return (
         <View style={[styles.container, { backgroundColor: colors.background }]}>
             <View style={styles.mainContent}>
-                <Text style={styles.titleHaveEvent}>EVENT STATISTICS</Text>
-                {event ? <Statistic event={event} /> : <Text>No event data available</Text>}
-                <Text style={styles.titleHaveEvent}>ENTRY STATISTICS</Text>
-                {!event && <Text>No entries data available</Text>}
+                <Text style={styles.titleHaveEvent}>{t("keeperCheck.title")}</Text>
+                {event ? <Statistic event={event} /> : <Text>{t("keeperCheck.noData")}</Text>}
+                <Text style={styles.titleHaveEvent}>{t("keeperCheck.entry")}</Text>
+                {!event && <Text>{t("keeperCheck.noEntry")}</Text>}
                 <EntryComponent entries={entry} />
             </View>
             <View style={styles.action}>

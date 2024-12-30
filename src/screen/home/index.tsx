@@ -1,4 +1,5 @@
 import React, { memo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FlatList, Image, RefreshControl, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Button, useTheme } from "react-native-paper";
 import homeImage from "~/assets/images/home.png";
@@ -9,6 +10,7 @@ import { CreateEvent } from "./create";
 import { EventComponent } from "./event.item";
 
 export const HomeScreen = memo(() => {
+    const { t } = useTranslation();
     const { colors } = useTheme();
     const { isLoading, handleGetEvent } = useEvent();
     const { events } = useEventStore();
@@ -26,13 +28,13 @@ export const HomeScreen = memo(() => {
             refreshControl={<RefreshControl refreshing={isLoading} onRefresh={onRefresh} colors={[colors.primary]} />}
         >
             <Image source={homeImage} style={styles.image} />
-            <Text style={styles.title}>{isLoading ? "Loading..." : "No events yet"}</Text>
+            <Text style={styles.title}>{isLoading ? t("home.loading") : t("home.noEvent")}</Text>
         </ScrollView>
     );
 
     const renderList = () => (
         <>
-            <Text style={styles.titleHaveEvent}>Events</Text>
+            <Text style={styles.titleHaveEvent}>{t("home.event")}</Text>
             <FlatList
                 style={styles.list}
                 showsVerticalScrollIndicator={false}
@@ -51,7 +53,7 @@ export const HomeScreen = memo(() => {
             <View style={styles.mainContent}>{events && events.length === 0 ? renderEmptyList() : renderList()}</View>
             <View style={styles.footer}>
                 <Button mode="contained" style={styles.button} onPress={() => setModalVisible(true)}>
-                    Create new event
+                    {t("home.createNewEvent")}
                 </Button>
             </View>
             <CreateEvent modalVisible={modalVisible} setModalVisible={(status) => setModalVisible(status)} />

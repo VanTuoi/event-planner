@@ -1,5 +1,6 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import React, { memo } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View, ViewStyle } from "react-native";
 import { IconButton, useTheme } from "react-native-paper";
 import { Entry } from "~/types/event";
@@ -9,21 +10,22 @@ interface EntryComponentProps {
     marginStyle?: ViewStyle;
 }
 
-const OpenIcon = () => (
+const OpenIcon = (title: string) => () => (
     <View style={[styles.iconContainer]}>
         <MaterialIcons name="lock-open" size={30} color="white" />
-        <Text style={styles.iconText}>OPENED</Text>
+        <Text style={styles.iconText}>{title}</Text>
     </View>
 );
 
-const CloseIcon = () => (
+const CloseIcon = (title: string) => () => (
     <View style={[styles.iconContainer]}>
         <MaterialIcons name="lock" size={30} color="white" />
-        <Text style={styles.iconText}>CLOSED</Text>
+        <Text style={styles.iconText}>{title}</Text>
     </View>
 );
 
 export const EntryComponent = memo(({ entries, marginStyle }: EntryComponentProps) => {
+    const { t } = useTranslation();
     const { colors } = useTheme();
 
     const handleChangeStatus = (status: string) => {
@@ -35,17 +37,25 @@ export const EntryComponent = memo(({ entries, marginStyle }: EntryComponentProp
             <View style={styles.mainContent}>
                 <View style={[styles.body]}>
                     <View style={[styles.bodyItem]}>
-                        <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>total in</Text>
+                        <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>
+                            {t("keeperDetail.totalIn")}
+                        </Text>
                         <Text style={[styles.bodyItemContain, { color: colors.primary }]}>{entries.totalIn}</Text>
                     </View>
                     <View style={[styles.bodyItem]}>
-                        <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>total out</Text>
+                        <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>
+                            {t("keeperDetail.totalOut")}
+                        </Text>
                         <Text style={[styles.bodyItemContain, { color: colors.primary }]}>{entries.totalOut}</Text>
                     </View>
                 </View>
                 <View style={[styles.action]}>
                     <IconButton
-                        icon={entries?.status === "open" ? OpenIcon : CloseIcon}
+                        icon={
+                            entries?.status === "open"
+                                ? OpenIcon(t("keeperDetail.status.open"))
+                                : CloseIcon(t("keeperDetail.status.close"))
+                        }
                         onPress={() => handleChangeStatus(entries?.status === "open" ? "closed" : "open")}
                         style={[
                             styles.IconButton,

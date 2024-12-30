@@ -1,4 +1,5 @@
 import React, { memo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from "react-native";
 import { Button, useTheme } from "react-native-paper";
 import {
@@ -17,6 +18,7 @@ interface EntryComponentProps {
 }
 
 export const EntryComponent = memo(({ eventId, entries, marginStyle }: EntryComponentProps) => {
+    const { t } = useTranslation();
     const { colors } = useTheme();
     const [modalVisible, setModalVisible] = useState(false);
     const { error: errorUpdate, isLoading: isLoadingUpdate, handleUpdateKeeperEvent } = useUpdateKeeperEvent();
@@ -48,14 +50,16 @@ export const EntryComponent = memo(({ eventId, entries, marginStyle }: EntryComp
                         <Text style={[styles.title]}>{entries?.name}</Text>
                         <View style={[styles.body]}>
                             <View style={[styles.bodyItem]}>
-                                <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>total in</Text>
+                                <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>
+                                    {t("detail.totalIn")}
+                                </Text>
                                 <Text style={[styles.bodyItemContain, { color: colors.primary }]}>
                                     {entries.totalIn}
                                 </Text>
                             </View>
                             <View style={[styles.bodyItem]}>
                                 <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>
-                                    total out
+                                    {t("detail.totalOut")}
                                 </Text>
                                 <Text style={[styles.bodyItemContain, { color: colors.primary }]}>
                                     {entries.totalOut}
@@ -75,7 +79,7 @@ export const EntryComponent = memo(({ eventId, entries, marginStyle }: EntryComp
                                 onPress={() => handleChangeStatus(entries?.status === "open" ? "close" : "open")}
                                 mode="text"
                             >
-                                {entries?.status === "open" ? "Opened" : "Closed"}
+                                {entries?.status === "open" ? t("detail.status.open") : t("detail.status.close")}
                             </Button>
                             <View
                                 style={[

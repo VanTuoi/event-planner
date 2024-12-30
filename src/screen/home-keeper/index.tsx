@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import { useTranslation } from "react-i18next";
 import { FlatList, Image, RefreshControl, StyleSheet, Text, View } from "react-native";
 import { useTheme } from "react-native-paper";
 import homeImage from "~/assets/images/home.png";
@@ -7,6 +8,7 @@ import { useSocket } from "~/hook/socket";
 import { EventComponent } from "./event.item";
 
 export const KeeperHomeScreen = memo(() => {
+    const { t } = useTranslation();
     const { colors } = useTheme();
     const { events, isLoading, handleGetEventKeeper } = useEventKeeper();
 
@@ -19,13 +21,13 @@ export const KeeperHomeScreen = memo(() => {
     const renderEmptyList = () => (
         <>
             <Image source={homeImage} style={styles.image} />
-            <Text style={styles.title}>{isLoading ? "Loading..." : "Events"}</Text>
+            <Text style={styles.title}>{isLoading ? t("homeKeeper.loading") : t("homeKeeper.noEvent")}</Text>
         </>
     );
 
     const renderList = () => (
         <>
-            <Text style={styles.titleHaveEvent}>Events</Text>
+            <Text style={styles.titleHaveEvent}>{t("homeKeeper.event")}</Text>
             <FlatList
                 style={styles.list}
                 showsVerticalScrollIndicator={false}

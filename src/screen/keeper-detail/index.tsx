@@ -1,5 +1,6 @@
 import { RouteProp, useRoute } from "@react-navigation/native";
 import React, { memo, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useEventStore } from "~/store";
@@ -8,6 +9,7 @@ import { EntryComponent } from "./entry.item";
 import { Statistic } from "./statistic";
 
 export const KeeperDetailScreen = memo(() => {
+    const { t } = useTranslation();
     const { colors } = useTheme();
     const { events } = useEventStore();
     const route = useRoute<RouteProp<RootStackParamList, "event-detail">>();
@@ -23,10 +25,10 @@ export const KeeperDetailScreen = memo(() => {
     return (
         <View style={[styles.container, { backgroundColor: colors.background }]}>
             <View style={styles.mainContent}>
-                <Text style={styles.titleHaveEvent}>EVENT STATISTICS</Text>
-                {event ? <Statistic event={event} /> : <Text>No event data available</Text>}
-                <Text style={styles.titleHaveEvent}>ENTRIES</Text>
-                {!event && <Text>No entries data available</Text>}
+                <Text style={styles.titleHaveEvent}>{t("keeperDetail.eventStatistics")}</Text>
+                {event ? <Statistic event={event} /> : <Text>{t("keeperDetail.noEventStatistics")}</Text>}
+                <Text style={styles.titleHaveEvent}>{t("keeperDetail.entry")}</Text>
+                {!event && <Text>{t("keeperDetail.noEntry")}</Text>}
                 <FlatList
                     contentContainerStyle={{ flexGrow: 1 }}
                     style={styles.list}

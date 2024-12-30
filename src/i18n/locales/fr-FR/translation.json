@@ -1,0 +1,126 @@
+{
+    "nav": {
+        "changeLanguage": "Changer de langue",
+        "welcome": "Bienvenue",
+        "logout": "Déconnexion",
+        "entry": "Région"
+    },
+    "home": {
+        "event": "Événements",
+        "loading": "Chargement...",
+        "noEvent": "Aucun événement pour le moment",
+        "createNewEvent": "Créer un nouvel événement",
+        "createEvent": {
+            "eventTitle": "Titre de l'événement",
+            "venue": "Lieu",
+            "maxParticipants": "Nombre maximal de participants",
+            "alertPoint": "Point d'alerte",
+            "numberOfEntries": "Nombre d'entrées",
+            "cancel": "Annuler",
+            "create": "Créer"
+        },
+        "entries": "entrées",
+        "maxParticipants": "Nombre maximal de participants",
+        "totalParticipants": "Nombre total de participants",
+        "seeMore": "voir plus"
+    },
+    "detail": {
+        "eventStatistics": "STATISTIQUES D'ÉVÉNEMENT",
+        "noEventStatistics": "Aucune donnée d'événement disponible",
+        "entry": "Entrées",
+        "noEntry": "Aucune donnée d'entrée disponible",
+        "currentIn": "Actuel dans",
+        "totalIn": "Total entrant",
+        "totalOut": "Total sortant",
+        "openedEntries": "Entrées ouvertes",
+        "closedEntries": "Entrées fermées",
+        "noData": "Aucune donnée d'événement disponible",
+        "status": {
+            "open": "Ouvert",
+            "close": "Fermé"
+        },
+        "config": {
+            "title": "Configuration d'entrée",
+            "id": "ID du gardien de la porte",
+            "email": "E-mail du gardien de la porte",
+            "add": "Ajouter un gardien",
+            "noKeeper": "Aucun gardien pour le moment",
+            "keepers": "Gardien(s)",
+            "delete": "Supprimer l'entrée"
+        },
+        "setting": {
+            "title": "PARAMETRES DE L'EVENEMENT",
+            "confirmEventDeletion": "Confirmer la suppression de l'événement",
+            "cancel": "Annuler",
+            "confirm": "Confirmer",
+            "event": {
+                "eventTitle": "Titre de l'événement",
+                "venue": "Lieu",
+                "maxParticipants": "Nombre maximal de participants",
+                "alertPoint": "Point d'alerte",
+                "numberOfEntries": "Nombre d'entrées",
+                "saveChanges": "Enregistrer les modifications",
+                "download": "Télécharger les statistiques de l'événement",
+                "delete": "Supprimer l'événement"
+            }
+        }
+    },
+    "login": {
+        "title": "Bienvenue",
+        "email": "EMAIL",
+        "pwd": "MOT DE PASSE",
+        "signIn": "Se connecter",
+        "createNewAccount": "Créer un nouveau compte"
+    },
+    "register": {
+        "title": "Créer un nouveau compte",
+        "name": "NOM",
+        "email": "EMAIL",
+        "pwd": "MOT DE PASSE",
+        "rePsw": "CONFIRMER LE MOT DE PASSE",
+        "register": "S'inscrire",
+        "login": "Vous avez déjà un compte"
+    },
+    "homeKeeper": {
+        "event": "Événements",
+        "loading": "Chargement...",
+        "noEvent": "Aucun événement pour le moment",
+        "createNewEvent": "Créer un nouvel événement",
+        "entries": "entrées",
+        "maxParticipants": "Nombre maximal de participants",
+        "totalParticipants": "Nombre total de participants",
+        "seeMore": "voir plus"
+    },
+    "keeperCheck": {
+        "title": "STATISTIQUES D'ÉVÉNEMENT",
+        "noData": "Aucune donnée d'événement disponible",
+        "entry": "STATISTIQUES D'ENTRÉE",
+        "noEntry": "Aucune donnée d'entrée disponible",
+        "currentIn": "Actuel",
+        "totalIn": "Total In",
+        "totalOut": "Total sortant",
+        "openedEntries": "Entrées ouvertes",
+        "closedEntries": "Entrées fermées",
+        "status": {
+            "open": "Ouvert",
+            "close": "Fermé"
+        }
+    },
+    "keeperDetail": {
+        "eventStatistics": "STATISTIQUES D'ÉVÉNEMENT",
+        "noEventStatistics": "Aucune donnée d'événement disponible",
+        "entry": "Entrées",
+        "noEntry": "Aucune donnée d'entrée disponible",
+        "currentIn": "Actuel dans",
+        "totalIn": "Total entrant",
+        "totalOut": "Total sortant",
+        "openedEntries": "Entrées ouvertes",
+        "closedEntries": "Entrées fermées",
+        "noData": "Aucune donnée d'événement disponible",
+        "status": {
+            "open": "Ouvert",
+            "close": "Fermé"
+        },
+        "noAccess": "Aucun accès"
+    }
+}

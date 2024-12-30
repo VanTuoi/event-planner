@@ -1,4 +1,5 @@
 import React, { memo, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, IconButton, Modal, Portal, Snackbar, TextInput, useTheme } from "react-native-paper";
 import { DoorKeeper } from "~/types/event";
@@ -30,6 +31,7 @@ export const EntryModal = memo(
         doorKeepers,
         handleDeleteEntry
     }: EntryModalProps) => {
+        const { t } = useTranslation();
         const { colors } = useTheme();
         const [visibleSnackbar, setVisibleSnackbar] = useState(false);
         const [keeperId, setKeeperId] = useState("");
@@ -55,7 +57,7 @@ export const EntryModal = memo(
             <Portal>
                 <Modal visible={visible} onDismiss={onClose} contentContainerStyle={styles.modal}>
                     <View style={styles.header}>
-                        <Text style={styles.title}>Entry Config</Text>
+                        <Text style={styles.title}>{t("detail.config.title")}</Text>
                         <IconButton
                             icon="close"
                             size={24}
@@ -68,14 +70,14 @@ export const EntryModal = memo(
                         <TextInput
                             mode="outlined"
                             style={styles.input}
-                            placeholder="Door keeper’s id"
+                            placeholder={t("detail.config.id")}
                             value={keeperId}
                             onChangeText={setKeeperId}
                         />
                         <TextInput
                             mode="outlined"
                             style={styles.input}
-                            placeholder="Door keeper’s email"
+                            placeholder={t("detail.config.email")}
                             value={keeperEmail}
                             onChangeText={setKeeperEmail}
                         />
@@ -87,10 +89,10 @@ export const EntryModal = memo(
                             labelStyle={[styles.buttonLabel]}
                             onPress={handleAddKeeper}
                         >
-                            Add keeper
+                            {t("detail.config.add")}
                         </Button>
                     </View>
-                    <Text style={styles.subTitle}>Keeper(s)</Text>
+                    <Text style={styles.subTitle}>{t("detail.config.keepers")}</Text>
                     {doorKeepers.map((keeper) => (
                         <View key={keeper.id} style={[styles.keeperRow, { borderColor: colors.primaryContainer }]}>
                             <View style={[styles.keeperRowTitle]}>
@@ -109,7 +111,9 @@ export const EntryModal = memo(
                             />
                         </View>
                     ))}
-                    {doorKeepers.length === 0 ? <Text style={styles.subTitleNoGateKeeper}> No keeper yet</Text> : null}
+                    {doorKeepers.length === 0 ? (
+                        <Text style={styles.subTitleNoGateKeeper}>{t("detail.config.noKeeper")}</Text>
+                    ) : null}
                     <Button
                         mode="outlined"
                         loading={isLoadingDeleteEntry}
@@ -118,7 +122,7 @@ export const EntryModal = memo(
                         labelStyle={[styles.buttonDeleteLabel, { color: colors.error }]}
                         onPress={handleDeleteEntry}
                     >
-                        Delete entry
+                        {t("detail.config.delete")}
                     </Button>
                 </Modal>
                 <Snackbar

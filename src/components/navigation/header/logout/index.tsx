@@ -1,9 +1,11 @@
 import React, { memo } from "react";
+import { useTranslation } from "react-i18next";
 import { Button, useTheme } from "react-native-paper";
 import { useLogout } from "~/hook/auth";
 import { useAuthStore } from "~/store";
 
 const Logout = memo(() => {
+    const { t } = useTranslation();
     const { colors } = useTheme();
     const { logout } = useAuthStore();
     const { handleLogout, isLoading } = useLogout();
@@ -22,6 +24,7 @@ const Logout = memo(() => {
             mode="contained"
             onPress={handlePress}
             style={{
+                width: "100%",
                 backgroundColor: colors.background,
                 borderColor: colors.primary,
                 borderWidth: 2,
@@ -32,7 +35,7 @@ const Logout = memo(() => {
                 fontSize: 16
             }}
         >
-            Log out
+            {t("nav.logout")}
         </Button>
     );
 });

@@ -1,6 +1,7 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
 import React, { memo, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Image, StyleSheet, View } from "react-native";
 import { Button, Snackbar, Text, useTheme } from "react-native-paper";
 import * as Yup from "yup";
@@ -15,8 +16,9 @@ const LoginSchema = Yup.object().shape({
 });
 
 export const LoginScreen: React.FC = memo(() => {
-    const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+    const { t } = useTranslation();
     const { colors } = useTheme();
+    const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
     const { handleLogin, isLoading, error } = useLogin();
     const [visibleSnackbar, setVisibleSnackbar] = useState(false);
@@ -40,11 +42,11 @@ export const LoginScreen: React.FC = memo(() => {
                     <View style={styles.mainContent}>
                         <Image source={loginImage} style={styles.image} />
                         <Text variant="headlineMedium" style={styles.title}>
-                            Welcome back
+                            {t("login.title")}
                         </Text>
 
                         <InputText
-                            label="EMAIL"
+                            label={t("login.email")}
                             value={values.email}
                             onChangeText={handleChange("email")}
                             onBlur={handleBlur("email")}
@@ -52,7 +54,7 @@ export const LoginScreen: React.FC = memo(() => {
                         />
 
                         <InputPassword
-                            label="PASSWORD"
+                            label={t("login.pwd")}
                             value={values.password}
                             onChangeText={handleChange("password")}
                             onBlur={handleBlur("password")}
@@ -68,7 +70,7 @@ export const LoginScreen: React.FC = memo(() => {
                             loading={isLoading}
                             disabled={isLoading}
                         >
-                            Sign in
+                            {t("login.signIn")}
                         </Button>
                         <Button
                             mode="outlined"
@@ -76,7 +78,7 @@ export const LoginScreen: React.FC = memo(() => {
                             style={styles.button}
                             disabled={isLoading}
                         >
-                            Create new account
+                            {t("login.createNewAccount")}
                         </Button>
                     </View>
 
