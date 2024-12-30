@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { useState } from "react";
+import customAxios from "~/services/http";
 import { ApiResponse } from "~/types/api-response";
 import { User } from "~/types/user";
 
@@ -24,14 +25,11 @@ export const useRegister = () => {
         setError(null);
 
         try {
-            const response = await axios.post<ApiResponse<RegisterSuccessData>>(
-                `${process.env.EXPO_PUBLIC_API_URL}/users/register`,
-                {
-                    email,
-                    password,
-                    name
-                }
-            );
+            const response = await customAxios.post<ApiResponse<RegisterSuccessData>>("/users/register", {
+                email,
+                password,
+                name
+            });
             return response.data;
         } catch (err) {
             if (axios.isAxiosError(err)) {

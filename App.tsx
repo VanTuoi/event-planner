@@ -4,12 +4,12 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { KeyboardAvoidingView, Platform, SafeAreaView } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Provider as PaperProvider } from "react-native-paper";
 import AppNavigation from "~/components/navigation/app.navigation";
-import "~/i18n";
+import { initI18n } from "~/i18n";
 import { AppTheme } from "~/theme/theme";
 
 SplashScreen.preventAutoHideAsync();
@@ -22,6 +22,17 @@ const App = () => {
         "Roboto-Bold": require("./src/assets/fonts/Roboto-Bold.ttf")
     });
 
+    const [isI18nReady, setI18nReady] = useState(false);
+
+    useEffect(() => {
+        const initialize = async () => {
+            await initI18n();
+            setI18nReady(true);
+            SplashScreen.hideAsync();
+        };
+        initialize();
+    }, []);
+
     useEffect(() => {
         if (fontsLoaded) {
             SplashScreen.hideAsync();
@@ -29,6 +40,10 @@ const App = () => {
     }, [fontsLoaded]);
 
     if (!fontsLoaded) {
+        return null;
+    }
+
+    if (!isI18nReady) {
         return null;
     }
 

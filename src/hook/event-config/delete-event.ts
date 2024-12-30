@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { useState } from "react";
+import customAxios from "~/services/http";
 import { ApiResponse } from "~/types/api-response";
 
 interface SuccessData {
@@ -19,9 +20,7 @@ export const useDeleteEvent = () => {
         setError(null);
 
         try {
-            const response = await axios.delete<ApiResponse<SuccessData>>(
-                `${process.env.EXPO_PUBLIC_API_URL}/events/event/${eventId}`
-            );
+            const response = await customAxios.delete<ApiResponse<SuccessData>>(`/events/event/${eventId}`);
 
             if (response.data.statusCode === 200) {
                 return {

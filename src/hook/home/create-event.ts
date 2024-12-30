@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { useState } from "react";
+import customAxios from "~/services/http";
 import { ApiResponse } from "~/types/api-response";
 import { Event } from "~/types/event";
 
@@ -26,16 +27,13 @@ export const useCreateEvent = () => {
         setError(null);
 
         try {
-            const response = await axios.post<ApiResponse<SuccessData>>(
-                `${process.env.EXPO_PUBLIC_API_URL}/events/create`,
-                {
-                    titleEvent,
-                    venue,
-                    maxParticipants,
-                    alertPoint,
-                    numberOfEntries: entries
-                }
-            );
+            const response = await customAxios.post<ApiResponse<SuccessData>>("/events/create", {
+                titleEvent,
+                venue,
+                maxParticipants,
+                alertPoint,
+                numberOfEntries: entries
+            });
             if (response.data.statusCode === 200 && Array.isArray(response.data.data.events)) {
                 return {
                     statusCode: response.data.statusCode,

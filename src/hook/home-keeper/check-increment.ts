@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { useCallback, useState } from "react";
+import customAxios from "~/services/http";
 import { ApiResponse } from "~/types/api-response";
 import { Event } from "~/types/event";
 
@@ -21,8 +22,8 @@ export const useCheckIncrement = () => {
             setError(null);
 
             try {
-                const url = `${process.env.EXPO_PUBLIC_API_URL}/events/event/${eventId}/entry/${entryId}/increment`;
-                const response = await axios.put<ApiResponse<SuccessData>>(url);
+                const url = `/events/event/${eventId}/entry/${entryId}/increment`;
+                const response = await customAxios.put<ApiResponse<SuccessData>>(url);
 
                 if (response.data.statusCode === 200) {
                     return response.data;

@@ -1,7 +1,7 @@
-import React, { memo } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FlatList, Image, RefreshControl, StyleSheet, Text, View } from "react-native";
-import { useTheme } from "react-native-paper";
+import { Snackbar, useTheme } from "react-native-paper";
 import homeImage from "~/assets/images/home.png";
 import { useEventKeeper } from "~/hook/home-keeper";
 import { useSocket } from "~/hook/socket";
@@ -10,13 +10,21 @@ import { EventComponent } from "./event.item";
 export const KeeperHomeScreen = memo(() => {
     const { t } = useTranslation();
     const { colors } = useTheme();
-    const { events, isLoading, handleGetEventKeeper } = useEventKeeper();
+    const { events, error, isLoading, handleGetEventKeeper } = useEventKeeper();
 
     useSocket();
 
     const onRefresh = () => {
         handleGetEventKeeper();
     };
+
+    const [visibleSnackbar, setVisibleSnackbar] = useState(false);
+
+    useEffect(() => {
+        if (error) {
+            setVisibleSnackbar(true);
+        }
+    }, [error]);
 
     const renderEmptyList = () => (
         <>
@@ -44,6 +52,13 @@ export const KeeperHomeScreen = memo(() => {
     return (
         <View style={[styles.container, { backgroundColor: colors.background }]}>
             <View style={styles.mainContent}>{events && events.length === 0 ? renderEmptyList() : renderList()}</View>
+            <Snackbar
+                visible={visibleSnackbar}
+                onDismiss={() => setVisibleSnackbar(false)}
+                duration={Snackbar.DURATION_SHORT}
+            >
+                {error}
+            </Snackbar>
         </View>
     );
 });

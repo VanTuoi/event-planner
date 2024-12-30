@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { useCallback, useEffect, useState } from "react";
+import customAxios from "~/services/http";
 import { useEventStore } from "~/store";
 import { ApiResponse } from "~/types/api-response";
 import { Event } from "~/types/event";
@@ -23,7 +24,7 @@ export const useEvent = () => {
         setError(null);
 
         try {
-            const response = await axios.get<ApiResponse<SuccessData>>(`${process.env.EXPO_PUBLIC_API_URL}/events/all`);
+            const response = await customAxios.get<ApiResponse<SuccessData>>("/events/all");
             if (response.data.statusCode === 200 && Array.isArray(response.data.data.events)) {
                 setEvents(response.data.data.events);
                 initEvents(response.data.data.events);
@@ -47,7 +48,6 @@ export const useEvent = () => {
                     data: { message: errorMessage }
                 };
             }
-            console.error("Unexpected error", err);
             setError("An unexpected error occurred. Please try again.");
             return {
                 statusCode: 500,

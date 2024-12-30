@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { useState } from "react";
+import customAxios from "~/services/http";
 import { ApiResponse } from "~/types/api-response";
 import { Event } from "~/types/event";
 
@@ -27,16 +28,13 @@ export const useUpdateEvent = () => {
         setError(null);
 
         try {
-            const response = await axios.put<ApiResponse<SuccessData>>(
-                `${process.env.EXPO_PUBLIC_API_URL}/events/update/${id}`,
-                {
-                    titleEvent,
-                    venue,
-                    maxParticipants,
-                    alertPoint,
-                    numberOfEntries: entries
-                }
-            );
+            const response = await customAxios.put<ApiResponse<SuccessData>>(`/events/update/${id}`, {
+                titleEvent,
+                venue,
+                maxParticipants,
+                alertPoint,
+                numberOfEntries: entries
+            });
             if (response.data.statusCode === 200 && Array.isArray(response.data.data.events)) {
                 return {
                     statusCode: response.data.statusCode,
