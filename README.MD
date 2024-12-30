@@ -32,6 +32,11 @@
 - Reference UI/UX design available on Figma:  
   [Event Planner Mobile App Design](https://www.figma.com/community/file/1015611559875216373/event-planner-mobile-app)
 
+### **Backend**
+
+- This is a simple component to supplement a more complete frontend.  
+  [Backend details at here](https://github.com/VanTuoi/event-planner-backend.git)
+
 ---
 
 ## **About the Author**
