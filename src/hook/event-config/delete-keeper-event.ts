@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { useState } from "react";
+import customAxios from "~/services/http";
 import { ApiResponse } from "~/types/api-response";
 import { Event } from "~/types/event";
 
@@ -23,12 +24,9 @@ export const useDeleteKeeperEvent = () => {
         setError(null);
 
         try {
-            const response = await axios.delete<ApiResponse<SuccessData>>(
-                `${process.env.EXPO_PUBLIC_API_URL}/events/keeper/remove/${idKeeper}`,
-                {
-                    data: { entryId }
-                }
-            );
+            const response = await customAxios.delete<ApiResponse<SuccessData>>(`/events/keeper/remove/${idKeeper}`, {
+                data: { entryId }
+            });
 
             if (response.data.statusCode === 200) {
                 return {

@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { useState } from "react";
+import customAxios from "~/services/http";
 import { ApiResponse } from "~/types/api-response";
 import { Event } from "~/types/event";
 
@@ -23,10 +24,9 @@ export const useChangeStatusEntryEvent = () => {
         setError(null);
 
         try {
-            const response = await axios.put<ApiResponse<SuccessData>>(
-                `${process.env.EXPO_PUBLIC_API_URL}/events/entry/status/${entryId}`,
-                { status }
-            );
+            const response = await customAxios.put<ApiResponse<SuccessData>>(`}/events/entry/status/${entryId}`, {
+                status
+            });
 
             if (response.data.statusCode === 200) {
                 return {

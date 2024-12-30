@@ -12,7 +12,7 @@ const resources = {
     "fr-FR": { translation: translationFr }
 };
 
-const initI18n = async () => {
+export const initI18n = async () => {
     let savedLanguage = await AsyncStorage.getItem("language");
 
     if (!savedLanguage) {
@@ -30,7 +30,3 @@ const initI18n = async () => {
         }
     });
 };
-
-initI18n();
-
-export default i18n;

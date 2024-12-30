@@ -1,5 +1,7 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios, { AxiosError } from "axios";
 import { useState } from "react";
+import customAxios from "~/services/http";
 import { useAuthStore } from "~/store";
 import { ApiResponse } from "~/types/api-response";
 import { User } from "~/types/user";
@@ -25,13 +27,12 @@ export const useLogin = () => {
         setError(null);
 
         try {
-            const response = await axios.post<ApiResponse<LoginSuccessData>>(
-                `${process.env.EXPO_PUBLIC_API_URL}/users/login`,
-                { email, password }
-            );
+            const response = await customAxios.post<ApiResponse<LoginSuccessData>>("/users/login", { email, password });
 
             if (response.data.statusCode === 200 && response.data.data.user) {
                 login(response.data.data.user);
+                AsyncStorage.setItem("token", response.data.data.user.token);
+                AsyncStorage.setItem("refreshToken", response.data.data.user.refreshToken);
             }
 
             return response.data;

@@ -1,7 +1,7 @@
-import React, { memo, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FlatList, Image, RefreshControl, ScrollView, StyleSheet, Text, View } from "react-native";
-import { Button, useTheme } from "react-native-paper";
+import { Button, Snackbar, useTheme } from "react-native-paper";
 import homeImage from "~/assets/images/home.png";
 import { useEvent } from "~/hook/home";
 import { useSocket } from "~/hook/socket";
@@ -12,7 +12,7 @@ import { EventComponent } from "./event.item";
 export const HomeScreen = memo(() => {
     const { t } = useTranslation();
     const { colors } = useTheme();
-    const { isLoading, handleGetEvent } = useEvent();
+    const { isLoading, handleGetEvent, error } = useEvent();
     const { events } = useEventStore();
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -21,6 +21,14 @@ export const HomeScreen = memo(() => {
     const onRefresh = () => {
         handleGetEvent();
     };
+
+    const [visibleSnackbar, setVisibleSnackbar] = useState(false);
+
+    useEffect(() => {
+        if (error) {
+            setVisibleSnackbar(true);
+        }
+    }, [error]);
 
     const renderEmptyList = () => (
         <ScrollView
@@ -57,6 +65,13 @@ export const HomeScreen = memo(() => {
                 </Button>
             </View>
             <CreateEvent modalVisible={modalVisible} setModalVisible={(status) => setModalVisible(status)} />
+            <Snackbar
+                visible={visibleSnackbar}
+                onDismiss={() => setVisibleSnackbar(false)}
+                duration={Snackbar.DURATION_SHORT}
+            >
+                {error}
+            </Snackbar>
         </View>
     );
 });

@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { useCallback, useEffect, useState } from "react";
+import customAxios from "~/services/http";
 import { useAuthStore, useEventStore } from "~/store";
 import { ApiResponse } from "~/types/api-response";
 import { Event } from "~/types/event";
@@ -24,9 +25,7 @@ export const useEventKeeper = () => {
         setError(null);
 
         try {
-            const response = await axios.get<ApiResponse<SuccessData>>(
-                `${process.env.EXPO_PUBLIC_API_URL}/events/keeper/${user?.id}`
-            );
+            const response = await customAxios.get<ApiResponse<SuccessData>>(`/events/keeper/${user?.id}`);
 
             if (response.data.statusCode === 200 && Array.isArray(response.data.data.events)) {
                 setEvents(response.data.data.events);
