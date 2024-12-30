@@ -1,0 +1,126 @@
+{
+    "nav": {
+        "changeLanguage": "Change Language",
+        "welcome": "Welcome",
+        "logout": "Log Out",
+        "entry": "Region"
+    },
+    "home": {
+        "event": "Events",
+        "loading": "Loading...",
+        "noEvent": "No events yet",
+        "createNewEvent": "Create new event",
+        "createEvent": {
+            "eventTitle": "Event Title",
+            "venue": "Venue",
+            "maxParticipants": "Max Participants",
+            "alertPoint": "Alert Point",
+            "numberOfEntries": "Number of Entries",
+            "cancel": "Cancel",
+            "create": "Create"
+        },
+        "entries": "entries",
+        "maxParticipants": "Max participants",
+        "totalParticipants": "Total participants",
+        "seeMore": "see more"
+    },
+    "detail": {
+        "eventStatistics": "EVENT STATISTICS",
+        "noEventStatistics": "No event data available",
+        "entry": "Entries",
+        "noEntry": "No entries data available",
+        "currentIn": "Current in",
+        "totalIn": "Total In",
+        "totalOut": "Total Out",
+        "openedEntries": "Open Entries",
+        "closedEntries": "Closed Entries",
+        "noData": "No event data available",
+        "status": {
+            "open": "Opened",
+            "close": "Closed"
+        },
+        "config": {
+            "title": "Entry Config",
+            "id": "Door keeper's id",
+            "email": "Door keeper's email",
+            "add": "Add keeper",
+            "noKeeper": "No keeper yet",
+            "keepers": "Keeper(s)",
+            "delete": "Delete entry"
+        },
+        "setting": {
+            "title": "EVENT SETTINGS",
+            "confirmEventDeletion": "Confirm event deletion",
+            "cancel": "Cancel",
+            "confirm": "Confirm",
+            "event": {
+                "eventTitle": "Event Title",
+                "venue": "Venue",
+                "maxParticipants": "Max Participants",
+                "alertPoint": "Alert Point",
+                "numberOfEntries": "Number of Entries",
+                "saveChanges": "Save changes",
+                "download": "Download event statistics",
+                "delete": "Delete event"
+            }
+        }
+    },
+    "login": {
+        "title": "Welcome back",
+        "email": "EMAIL",
+        "pwd": "PASSWORD",
+        "signIn": "Sign in",
+        "createNewAccount": " Create new account"
+    },
+    "register": {
+        "title": "Create a new account",
+        "name": "NAME",
+        "email": "EMAIL",
+        "pwd": "PASSWORD",
+        "rePsw": "CONFIRM PASSWORD",
+        "register": "Register",
+        "login": " Already have an account"
+    },
+    "homeKeeper": {
+        "event": "Events",
+        "loading": "Loading...",
+        "noEvent": "No events yet",
+        "createNewEvent": "Create new event",
+        "entries": "entries",
+        "maxParticipants": "Max participants",
+        "totalParticipants": "Total participants",
+        "seeMore": "see more"
+    },
+    "keeperCheck": {
+        "title": "EVENT STATISTICS",
+        "noData": "No event data available",
+        "entry": "ENTRY STATISTICS",
+        "noEntry": "No entries data available",
+        "currentIn": "Current In",
+        "totalIn": "Total In",
+        "totalOut": "Total Out",
+        "openedEntries": "Open Entries",
+        "closedEntries": "Closed Entries",
+        "status": {
+            "open": "Opened",
+            "close": "Closed"
+        }
+    },
+    "keeperDetail": {
+        "eventStatistics": "EVENT STATISTICS",
+        "noEventStatistics": "No event data available",
+        "entry": "Entries",
+        "noEntry": "No entries data available",
+        "currentIn": "Current in",
+        "totalIn": "Total In",
+        "totalOut": "Total Out",
+        "openedEntries": "Open Entries",
+        "closedEntries": "Closed Entries",
+        "noData": "No event data available",
+        "status": {
+            "open": "Opened",
+            "close": "Closed"
+        },
+        "noAccess": "No Access"
+    }
+}

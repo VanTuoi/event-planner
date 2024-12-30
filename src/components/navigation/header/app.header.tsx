@@ -1,16 +1,23 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import React, { memo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useAuthStore } from "~/store";
+import Logo from "../logo";
 import SelectLanguage from "./language";
 import Logout from "./logout";
 
+const heightNavigation = 270;
+
 export const AppHeader = memo(() => {
+    const { t } = useTranslation();
+    const { colors } = useTheme();
+    const { user } = useAuthStore();
+
     const [isExpanded, setIsExpanded] = useState(false);
     const heightAnim = useRef(new Animated.Value(60)).current;
-    const { colors, fonts } = useTheme();
-    const { user } = useAuthStore();
+
     const toggleHeader = () => {
         if (isExpanded) {
             Animated.timing(heightAnim, {
@@ -20,7 +27,7 @@ export const AppHeader = memo(() => {
             }).start(() => setIsExpanded(false));
         } else {
             Animated.timing(heightAnim, {
-                toValue: 200,
+                toValue: heightNavigation,
                 duration: 300,
                 useNativeDriver: false
             }).start(() => setIsExpanded(true));
@@ -31,26 +38,17 @@ export const AppHeader = memo(() => {
         <Animated.View style={[styles.container, { height: heightAnim, backgroundColor: colors.primary }]}>
             <View style={styles.topRow}>
                 <TouchableOpacity onPress={toggleHeader}>
-                    <MaterialIcons name="menu" size={28} color={colors.background} />
+                    <MaterialIcons name={isExpanded ? "close" : "menu"} size={28} color={colors.background} />
                 </TouchableOpacity>
-                <Text
-                    style={[
-                        styles.title,
-                        {
-                            color: colors.background,
-                            fontSize: fonts.titleLarge.fontSize,
-                            fontFamily: fonts.titleLarge.fontFamily
-                        }
-                    ]}
-                >
-                    Event Planner
-                </Text>
+                <Logo />
             </View>
             {isExpanded === true ? (
                 <View style={styles.hiddenContent}>
                     <Logout />
                     <SelectLanguage />
-                    <Text style={[styles.welcome, { color: colors.background }]}>Welcome {user?.name}</Text>
+                    <Text style={[styles.welcome, { color: colors.background }]}>
+                        {t("nav.welcome")} {user?.name}
+                    </Text>
                 </View>
             ) : null}
         </Animated.View>
@@ -76,10 +74,10 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
     hiddenContent: {
-        padding: 10
-    },
-    logoutButton: {
-        fontSize: 16
+        alignItems: "center",
+        padding: 10,
+        display: "flex",
+        flexDirection: "column"
     },
     welcome: {
         width: "100%",

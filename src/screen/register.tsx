@@ -1,6 +1,7 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
 import React, { memo, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Image, StyleSheet, View } from "react-native";
 import { Button, Snackbar, Text, useTheme } from "react-native-paper";
 import * as Yup from "yup";
@@ -19,8 +20,9 @@ const RegisterSchema = Yup.object().shape({
 });
 
 export const RegisterScreen: React.FC = memo(() => {
-    const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+    const { t } = useTranslation();
     const { colors } = useTheme();
+    const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
     const { handleRegister, isLoading, error } = useRegister();
     const [visibleSnackbar, setVisibleSnackbar] = useState(false);
@@ -47,11 +49,11 @@ export const RegisterScreen: React.FC = memo(() => {
                     <View style={styles.mainContent}>
                         <Image source={registerImage} style={styles.image} />
                         <Text variant="headlineMedium" style={styles.title}>
-                            Create a new account
+                            {t("register.title")}
                         </Text>
 
                         <InputText
-                            label="NAME"
+                            label={t("register.name")}
                             value={values.name}
                             onChangeText={handleChange("name")}
                             onBlur={handleBlur("name")}
@@ -59,7 +61,7 @@ export const RegisterScreen: React.FC = memo(() => {
                         />
 
                         <InputText
-                            label="EMAIL"
+                            label={t("register.email")}
                             value={values.email}
                             onChangeText={handleChange("email")}
                             onBlur={handleBlur("email")}
@@ -67,7 +69,7 @@ export const RegisterScreen: React.FC = memo(() => {
                         />
 
                         <InputPassword
-                            label="PASSWORD"
+                            label={t("register.pwd")}
                             value={values.password}
                             onChangeText={handleChange("password")}
                             onBlur={handleBlur("password")}
@@ -75,7 +77,7 @@ export const RegisterScreen: React.FC = memo(() => {
                         />
 
                         <InputPassword
-                            label="CONFIRM PASSWORD"
+                            label={t("register.rePsw")}
                             value={values.confirmPassword}
                             onChangeText={handleChange("confirmPassword")}
                             onBlur={handleBlur("confirmPassword")}
@@ -91,7 +93,7 @@ export const RegisterScreen: React.FC = memo(() => {
                             loading={isLoading}
                             disabled={isLoading}
                         >
-                            Register
+                            {t("register.register")}
                         </Button>
                         <Button
                             mode="outlined"
@@ -99,7 +101,7 @@ export const RegisterScreen: React.FC = memo(() => {
                             style={styles.button}
                             disabled={isLoading}
                         >
-                            Already have an account
+                            {t("register.login")}
                         </Button>
                     </View>
 

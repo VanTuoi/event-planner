@@ -9,6 +9,7 @@ import { KeyboardAvoidingView, Platform, SafeAreaView } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Provider as PaperProvider } from "react-native-paper";
 import AppNavigation from "~/components/navigation/app.navigation";
+import "~/i18n";
 import { AppTheme } from "~/theme/theme";
 
 SplashScreen.preventAutoHideAsync();

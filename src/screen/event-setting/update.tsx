@@ -1,5 +1,6 @@
 import { Formik } from "formik";
 import React, { memo, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Button, Snackbar, useTheme } from "react-native-paper";
 import * as Yup from "yup";
@@ -26,11 +27,11 @@ interface UpdateEventProps {
     initialValuesToProps: Event | undefined;
     onDownloadStatistics: () => void;
     onDelete: () => void;
-    onSave: (event: EventCreate) => void;
 }
 
-const UpdateEvent: React.FC<UpdateEventProps> = ({ onSave, onDelete, onDownloadStatistics, initialValuesToProps }) => {
+const UpdateEvent: React.FC<UpdateEventProps> = ({ onDelete, onDownloadStatistics, initialValuesToProps }) => {
     const { colors } = useTheme();
+    const { t } = useTranslation();
     const { handleUpdateEvent, isLoading, error } = useUpdateEvent();
 
     const [visibleSnackbar, setVisibleSnackbar] = useState(false);
@@ -42,7 +43,6 @@ const UpdateEvent: React.FC<UpdateEventProps> = ({ onSave, onDelete, onDownloadS
     }, [error]);
 
     const handleSubmit = async (values: EventCreate) => {
-        onSave(values);
         if (initialValuesToProps) {
             await handleUpdateEvent(
                 initialValuesToProps?.id,
@@ -100,7 +100,7 @@ const UpdateEvent: React.FC<UpdateEventProps> = ({ onSave, onDelete, onDownloadS
                         <View style={styles.formFields}>
                             <InputText
                                 backgroundColor={colors.secondaryContainer}
-                                label="Event Title"
+                                label={t("detail.setting.event.eventTitle")}
                                 value={values.titleEvent}
                                 onChangeText={handleChange("titleEvent")}
                                 onBlur={handleBlur("titleEvent")}
@@ -109,7 +109,7 @@ const UpdateEvent: React.FC<UpdateEventProps> = ({ onSave, onDelete, onDownloadS
 
                             <InputText
                                 backgroundColor={colors.secondaryContainer}
-                                label="Venue"
+                                label={t("detail.setting.event.venue")}
                                 value={values.venue}
                                 onChangeText={handleChange("venue")}
                                 onBlur={handleBlur("venue")}
@@ -118,7 +118,7 @@ const UpdateEvent: React.FC<UpdateEventProps> = ({ onSave, onDelete, onDownloadS
 
                             <NumberInput
                                 backgroundColor={colors.secondaryContainer}
-                                label="Max Participants"
+                                label={t("detail.setting.event.maxParticipants")}
                                 value={values.maxParticipants}
                                 onChangeText={handleChange("maxParticipants")}
                                 onBlur={handleBlur("maxParticipants")}
@@ -127,7 +127,7 @@ const UpdateEvent: React.FC<UpdateEventProps> = ({ onSave, onDelete, onDownloadS
 
                             <NumberInput
                                 backgroundColor={colors.secondaryContainer}
-                                label="Alert Point"
+                                label={t("detail.setting.event.alertPoint")}
                                 value={values.alertPoint}
                                 onChangeText={handleChange("alertPoint")}
                                 onBlur={handleBlur("alertPoint")}
@@ -136,7 +136,7 @@ const UpdateEvent: React.FC<UpdateEventProps> = ({ onSave, onDelete, onDownloadS
 
                             <NumberInput
                                 backgroundColor={colors.secondaryContainer}
-                                label="Number of Entries"
+                                label={t("detail.setting.event.numberOfEntries")}
                                 value={values.numberOfEntries}
                                 onChangeText={handleChange("numberOfEntries")}
                                 onBlur={handleBlur("numberOfEntries")}
@@ -153,7 +153,7 @@ const UpdateEvent: React.FC<UpdateEventProps> = ({ onSave, onDelete, onDownloadS
                                 style={[styles.button]}
                                 onPress={() => formikHandleSubmit()}
                             >
-                                Save changes
+                                {t("detail.setting.event.saveChanges")}
                             </Button>
                             <Button
                                 mode="outlined"
@@ -164,7 +164,7 @@ const UpdateEvent: React.FC<UpdateEventProps> = ({ onSave, onDelete, onDownloadS
                                 ]}
                                 onPress={() => onDownloadStatistics()}
                             >
-                                Download event statistics
+                                {t("detail.setting.event.download")}
                             </Button>
                             <Button
                                 mode="outlined"
@@ -172,7 +172,7 @@ const UpdateEvent: React.FC<UpdateEventProps> = ({ onSave, onDelete, onDownloadS
                                 style={[styles.button, { borderColor: colors.error, borderWidth: 2 }]}
                                 onPress={() => onDelete()}
                             >
-                                Delete event
+                                {t("detail.setting.event.delete")}
                             </Button>
                         </View>
                     </ScrollView>

@@ -1,4 +1,5 @@
 import React, { memo, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
 import { useTheme } from "react-native-paper";
 import CustomProgressBar from "~/components/process-bar";
@@ -6,7 +7,7 @@ import { Event } from "~/types/event";
 
 export const Statistic = memo(({ event }: { event: Event }) => {
     const { colors } = useTheme();
-
+    const { t } = useTranslation();
     const totalGuestsIn = useMemo(
         () => event.entries.reduce((total, entry) => total + entry.totalIn, 0),
         [event.entries]
@@ -35,7 +36,7 @@ export const Statistic = memo(({ event }: { event: Event }) => {
                 {event ? (
                     <>
                         <View style={[styles.process]}>
-                            <Text style={[styles.processTitle]}>Current in</Text>
+                            <Text style={[styles.processTitle]}>{t("detail.currentIn")}</Text>
                             <Text style={[styles.processContain, { color: colors.primary }]}>
                                 {currentGuests}/{event.maxParticipants}
                             </Text>
@@ -43,12 +44,14 @@ export const Statistic = memo(({ event }: { event: Event }) => {
                         <CustomProgressBar progress={currentGuests / event.maxParticipants} color="#DDC523" />
                         <View style={[styles.body]}>
                             <View style={[styles.bodyItem]}>
-                                <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>Total in</Text>
+                                <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>
+                                    {t("detail.totalIn")}
+                                </Text>
                                 <Text style={[styles.bodyItemContain, { color: colors.primary }]}>{totalGuestsIn}</Text>
                             </View>
                             <View style={[styles.bodyItem]}>
                                 <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>
-                                    Total out
+                                    {t("detail.totalOut")}
                                 </Text>
                                 <Text style={[styles.bodyItemContain, { color: colors.primary }]}>
                                     {totalGuestsOut}
@@ -56,7 +59,7 @@ export const Statistic = memo(({ event }: { event: Event }) => {
                             </View>
                             <View style={[styles.bodyItem]}>
                                 <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>
-                                    opened entries
+                                    {t("detail.openedEntries")}
                                 </Text>
                                 <Text style={[styles.bodyItemContain, { color: colors.primary }]}>
                                     {totalOpenEntries}
@@ -64,7 +67,7 @@ export const Statistic = memo(({ event }: { event: Event }) => {
                             </View>
                             <View style={[styles.bodyItem]}>
                                 <Text style={[styles.bodyItemTitle, { color: colors.primaryContainer }]}>
-                                    close entries
+                                    {t("detail.closedEntries")}
                                 </Text>
                                 <Text style={[styles.bodyItemContain, { color: colors.primary }]}>
                                     {totalCloseEntries}
@@ -73,7 +76,7 @@ export const Statistic = memo(({ event }: { event: Event }) => {
                         </View>
                     </>
                 ) : (
-                    <Text>No event data available</Text>
+                    <Text>{t("detail.noData")}</Text>
                 )}
             </View>
         </View>

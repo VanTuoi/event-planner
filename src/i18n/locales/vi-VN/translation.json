@@ -1,0 +1,126 @@
+{
+    "nav": {
+        "changeLanguage": "Thay đổi ngôn ngữ",
+        "welcome": "Chào mừng",
+        "logout": "Đăng xuất",
+        "entry": "Khu vực"
+    },
+    "home": {
+        "event": "Sự kiện",
+        "loading": "Đang tải...",
+        "noEvent": "Chưa có sự kiện nào",
+        "createNewEvent": "Tạo sự kiện mới",
+        "createEvent": {
+            "eventTitle": "Tên sự kiện",
+            "venue": "Địa điểm",
+            "maxParticipants": "Số lượng tối đa",
+            "alertPoint": "Mức cảnh báo",
+            "numberOfEntries": "Số lượng khu vực",
+            "cancel": "Hủy",
+            "create": "Tạo"
+        },
+        "entries": "Khu vực",
+        "maxParticipants": "Số người tối đa",
+        "totalParticipants": "Số người tham gia",
+        "seeMore": "xem thêm"
+    },
+    "detail": {
+        "eventStatistics": "THỐNG KÊ SỰ KIỆN",
+        "noEventStatistics": "Không có dữ liệu sự kiện nào khả dụng",
+        "entry": "Các khu vực",
+        "noEntry": "Không có dữ liệu mục nhập nào khả dụng",
+        "currentIn": "Hiện tại",
+        "totalIn": "Tổng số vào",
+        "totalOut": "Tổng số ra",
+        "openedEntries": "Khu vực mở",
+        "closedEntries": "Khu vực đóng",
+        "noData": "Không có dữ liệu sự kiện nào khả dụng",
+        "status": {
+            "open": "Đã mở",
+            "close": "Đã đóng"
+        },
+        "config": {
+            "title": "Cấu hình mục nhập",
+            "id": "ID của người giữ cửa",
+            "email": "Email của người giữ cửa",
+            "add": "Thêm người giữ cửa",
+            "noKeeper": "Không có",
+            "keepers": "Người giữ cửa",
+            "delete": "Xóa khu vực"
+        },
+        "setting": {
+            "title": "CÀI ĐẶT SỰ KIỆN",
+            "confirmEventDeletion": "Xác nhận xóa sự kiện",
+            "cancel": "Hủy",
+            "confirm": "Xác nhận",
+            "event": {
+                "eventTitle": "Tiêu đề sự kiện",
+                "venue": "Địa điểm",
+                "maxParticipants": "Số người tham gia tối đa",
+                "alertPoint": "Mức cảnh báo",
+                "numberOfEntries": "Số khu vực",
+                "saveChanges": "Lưu thay đổi",
+                "download": "Tải xuống số liệu thống kê sự kiện",
+                "delete": "Xóa sự kiện"
+            }
+        }
+    },
+    "login": {
+        "title": "Chào mừng trở lại",
+        "email": "EMAIL",
+        "pwd": "MẬT KHẨU",
+        "signIn": "Đăng nhập",
+        "createNewAccount": "Tạo tài khoản mới"
+    },
+    "register": {
+        "title": "Tạo tài khoản mới",
+        "name": "TÊN",
+        "email": "EMAIL",
+        "pwd": "MẬT KHẨU",
+        "rePsw": "XÁC NHẬN MẬT KHẨU",
+        "register": "Đăng ký",
+        "login": "Đã có tài khoản"
+    },
+    "homeKeeper": {
+        "event": "Sự kiện",
+        "loading": "Đang tải...",
+        "noEvent": "Chưa có sự kiện nào",
+        "createNewEvent": "Tạo sự kiện mới",
+        "entries": "entries",
+        "maxParticipants": "Số người tham gia tối đa",
+        "totalParticipants": "Tổng số người tham gia",
+        "seeMore": "xem thêm"
+    },
+    "keeperCheck": {
+        "title": "THỐNG KÊ SỰ KIỆN",
+        "noData": "Không có dữ liệu sự kiện nào khả dụng",
+        "entry": "THỐNG KÊ KHU VỰc",
+        "noEntry": "Không có dữ liệu khu vực nào khả dụng",
+        "currentIn": "Hiện tại",
+        "totalIn": "Tổng số vào",
+        "totalOut": "Tổng số ra",
+        "openedEntries": "Mở khu vực",
+        "closedEntries": "Đóng khu vực",
+        "status": {
+            "open": "Đã mở",
+            "close": "Đã đóng"
+        }
+    },
+    "keeperDetail": {
+        "eventStatistics": "THỐNG KÊ SỰ KIỆN",
+        "noEventStatistics": "Không có dữ liệu sự kiện nào khả dụng",
+        "entry": "Khu vực",
+        "noEntry": "Không có dữ liệu khu vực nào khả dụng",
+        "currentIn": "Hiện tại trong",
+        "totalIn": "Tổng số trong",
+        "totalOut": "Tổng số ra",
+        "openedEntries": "Khu vực mở",
+        "closedEntries": "Khu vực đóng",
+        "noData": "Không có dữ liệu sự kiện nào khả dụng",
+        "status": {
+            "open": "Đã mở",
+            "close": "Đã đóng"
+        },
+        "noAccess": "Không có quyền truy cập"
+    }
+}
