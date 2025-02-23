@@ -10,6 +10,9 @@
 
 - An event management application that allows users to create, manage, and track events effortlessly.
 - Features a clean, user-friendly interface inspired by modern design principles.
+- Video Demo:
+[![Watch the video](https://img.youtube.com/vi/-yruV7nSKy4/0.jpg)](https://youtu.be/-yruV7nSKy4)
+
 
 ### **Key Features**
 
