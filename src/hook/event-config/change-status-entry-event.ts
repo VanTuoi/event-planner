@@ -24,7 +24,7 @@ export const useChangeStatusEntryEvent = () => {
         setError(null);
 
         try {
-            const response = await customAxios.put<ApiResponse<SuccessData>>(`}/events/entry/status/${entryId}`, {
+            const response = await customAxios.put<ApiResponse<SuccessData>>(`/events/entry/status/${entryId}`, {
                 status
             });
 
